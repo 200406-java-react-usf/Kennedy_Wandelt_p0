@@ -1,0 +1,23 @@
+{
+  "name": "kennedy_wandelt_p0",
+  "version": "1.0.0",
+  "description": "LettuceEat - A weekly meal planner",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/200406-java-react-usf/Kennedy_Wandelt_p0.git"
+  },
+  "author": "Kennedy Wandelt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/200406-java-react-usf/Kennedy_Wandelt_p0/issues"
+  },
+  "homepage": "https://github.com/200406-java-react-usf/Kennedy_Wandelt_p0#readme",
+  "devDependencies": {
+    "jest": "^25.4.0",
+    "typescript": "^2.0.6"
+  }
+}
