@@ -1,4 +1,4 @@
-import { Ingredient } from './ingredient'
+import { Ingredient } from './ingredient';
 
 
 export class Recipe {
@@ -27,7 +27,7 @@ export class Recipe {
         }
         
         this.totalCal = cals;
-        this.totalCarbs = carbs
+        this.totalCarbs = carbs;
         this.totalProtien = protiens;
         this.totalFats = fats;
     }

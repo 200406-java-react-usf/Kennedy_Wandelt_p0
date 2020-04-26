@@ -10,4 +10,4 @@ export default [
     new Recipe('avacado and chicken taco (3)', [ingredients[0], ingredients[0], ingredients[0], ingredients[1], ingredients[1], ingredients[1], ingredients[2], ingredients[3], ingredients[4], ingredients[5]]),
     new Recipe('butter chicken', [ingredients[13], ingredients[14], ingredients[15], ingredients[4], ingredients[2], ingredients[2], ingredients[2], ingredients[5]])
 
-]
+];

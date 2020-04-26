@@ -31,4 +31,4 @@ export default [
     new Ingredient('garlic', 'unit', 3, 1, 0, 0),
     new Ingredient('cream', 'tbsp', 45, 0, 0, 5)
 
-]
+];
