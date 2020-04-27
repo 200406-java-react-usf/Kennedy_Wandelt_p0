@@ -7,7 +7,7 @@ export class Ingredient {
     protien: number;
     fats: number;
 
-    // units: 'cup', 'tbs', 'tsp', 'serving', etc. 
+    // units: 'cup', 'tbs', 'tsp', 'unit', etc. 
     // calories: measured in calories
     // carbs: measured in grams
     // protien: measured in grams
