@@ -62,4 +62,16 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         });
     }
 
+    deleteByName(name: string): Promise<boolean> {
+
+        return new Promise<boolean>((resolve, reject) => {
+
+            for(let i = 0; i < ingredientData.length; i++) {
+                
+            }
+
+        })
+
+    }
+
 }
