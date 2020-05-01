@@ -13,7 +13,7 @@ export class IngredientService {
         this.ingredientRepo = ingredientRepo;
     }
 
-    getAllUsers(): Promise<Ingredient[]> {
+    getAllIngredients(): Promise<Ingredient[]> {
         
         return new Promise<Ingredient[]>(async (resolve, reject) => {
 
