@@ -1,7 +1,13 @@
-import ingredientData from './data/ingredient-data'
+import express from 'express';
+import fs from 'fs';
+import morgan from 'morgan';
+import path from 'path';
+import { IngredientRouter } from './routers/ingredient-router';
+import { RecipeRouter } from '/routers/recipe-router';
+import { MealplanRouter} from '/routers/mealplan-router';
 
-for(let x in ingredientData[0]) {
-    console.log(x);
-}
+const app = express();
 
-console.log()
+app.listen(8080, () => {
+    console.log('Application running and listening at: http://localhost:8080');
+})
