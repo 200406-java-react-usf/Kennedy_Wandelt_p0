@@ -4,31 +4,45 @@ import ingredientData from '../data/ingredient-data';
 import {
     BadRequestError,
     DataNotFoundError,
-    DataSaveError
+    DataSaveError,
+    InternalServerError
 } from '../errors/errors';
+import { PoolClient } from 'pg';
+import { connectionPool } from '..';
 
 
 export class IngredientRepo implements CrudRepo<Ingredient> {
 
     //gets all ingredients and returns values in promise
-    getAll(): Promise<Ingredient[]> {
+    async getAll(): Promise<Ingredient[]> {
 
-        return new Promise((resolve) => {
-        
-            let ingredients: Ingredient[] = ingredientData;
-            resolve(ingredients)
-            
-        });
+        let client : PoolClient;
+
+        try {
+            client = await connectionPool.connect();
+            let sql = 'select * from ingredients';
+            let rs = await client.query(sql);
+            return rs.rows;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     }
 
-    getByName(name: string): Promise<Ingredient> {
+    async getByName(name: string): Promise<Ingredient> {
 
-        return new Promise((resolve) => {
-
-            let ingredient = {...ingredientData.filter(ing => ing.name === name)[0]};
-            resolve(ingredient);
-            
-        });
+    let client : PoolClient;
+        try{
+            client = await connectionPool.connect();
+            let sql = `select * from ingredients where name = ${name}`;
+            let rs = await client.query(sql);
+            return rs.rows;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }  
     }
 
     save(newIng: Ingredient): Promise<Ingredient> {

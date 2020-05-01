@@ -44,8 +44,17 @@ class DataSaveError extends ApplicationError {
     }
 }
 
+class InternalServerError extends ApplicationError {
+
+    constructor(reason?: string) {
+        super(500, reason);
+        super.setMessage('An unexpected error ocurred');
+    }
+}
+
 export {
     DataNotFoundError,
     BadRequestError,
-    DataSaveError
+    DataSaveError,
+    InternalServerError
 }

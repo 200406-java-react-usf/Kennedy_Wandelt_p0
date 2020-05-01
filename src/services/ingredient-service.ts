@@ -14,27 +14,22 @@ export class IngredientService {
         this.ingredientRepo = ingredientRepo;
     }
 
-    getAllIngredients(): Promise<Ingredient[]> {
+    async getAllIngredients(): Promise<Ingredient[]> {
         
-        return new Promise<Ingredient[]>(async (resolve, reject) => {
-
-            //create array of ingredients and use repo logic to get the ingredients
-            let ingredients: Ingredient[] = [];
-            let result = await this.ingredientRepo.getAll();
-
-            //populate ingredients array
-            for (let ingredient of result) {
-                ingredients.push({...ingredient});
-            }
+        try {
+        //create array of ingredients and use repo logic to get the ingredients
+            let ingredients = await this.ingredientRepo.getAll();
 
             if (ingredients.length == 0) {
-                reject(new DataNotFoundError());
-                return;
+                throw new DataNotFoundError();
             }
-
-            resolve(ingredients);
-        });
+            return (ingredients);
+        } catch (e) {
+            throw e;
+        }
     }
+
+
     getIngredientByName(name: string): Promise<Ingredient> {
 
         return new Promise<Ingredient>(async (resolve, reject) => {
