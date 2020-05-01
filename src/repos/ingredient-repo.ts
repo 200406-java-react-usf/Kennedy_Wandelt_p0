@@ -1,6 +1,11 @@
-import { CrudRepository as CrudRepo } from './crud-repo'
-import { Ingredient } from '../models/ingredient'
-import ingredientData from '../data/ingredient-data'
+import { CrudRepository as CrudRepo } from './crud-repo';
+import { Ingredient } from '../models/ingredient';
+import ingredientData from '../data/ingredient-data';
+import {
+    BadRequestError,
+    DataNotFoundError,
+    DataSaveError
+} from '../errors/errors';
 
 
 export class IngredientRepo implements CrudRepo<Ingredient> {
@@ -16,7 +21,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         })
     }
 
-    
+
 
     getByName(name: string): Promise<Ingredient> {
 
