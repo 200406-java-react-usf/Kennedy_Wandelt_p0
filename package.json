@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/200406-java-react-usf/Kennedy_Wandelt_p0#readme",
   "devDependencies": {
+    "@types/express": "^4.17.6",
     "@types/jest": "^25.2.1",
     "@types/node": "^12.12.37",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
@@ -26,5 +27,8 @@
     "ts-jest": "^25.4.0",
     "ts-node": "^8.9.0",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
