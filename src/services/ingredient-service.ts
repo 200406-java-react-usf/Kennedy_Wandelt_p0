@@ -30,6 +30,8 @@ export class IngredientService {
                 reject(new DataNotFoundError());
                 return;
             }
+
+            resolve(ingredients);
         });
     }
 }

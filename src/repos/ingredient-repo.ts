@@ -18,10 +18,8 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
             let ingredients: Ingredient[] = ingredientData;
             resolve(ingredients)
             
-        })
+        });
     }
-
-
 
     getByName(name: string): Promise<Ingredient> {
 

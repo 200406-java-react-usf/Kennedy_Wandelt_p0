@@ -4,7 +4,8 @@
   "description": "LettuceEat - A weekly meal planner",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "tsc && node ./build/index.js"
   },
   "repository": {
     "type": "git",

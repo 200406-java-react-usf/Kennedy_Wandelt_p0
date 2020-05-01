@@ -5,6 +5,7 @@ import { IngredientRouter } from './routers/ingredient-router';
 
 const app = express();
 
+app.use('/', express.json());
 app.use('/ingredients', IngredientRouter);
 
 app.listen(8080, () => {

@@ -1,6 +1,6 @@
 import { Ingredient } from './ingredient';
 
-
+//recipes should be a single servings worth
 export class Recipe {
 
     name: string;
