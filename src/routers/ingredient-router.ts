@@ -17,3 +17,13 @@ IngredientRouter.get('', async (req, resp) => {
     }
     resp.send();
 });
+
+IngredientRouter.get('/name:', async (req, resp) => {
+    const name = req.params.name;
+    try {
+        let payload = await ingredientService.getIngredientByName(name);
+        return resp.status(200).json(payload);
+    } catch (e) {
+        return resp.status(e.statusCode).json(e).send();
+    }
+});

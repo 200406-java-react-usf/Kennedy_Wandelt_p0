@@ -7,6 +7,7 @@ import {
     DataNotFoundError,
     DataSaveError
 } from "../errors/errors"
+import { isEmptyObject } from "../util/validator";
 
 export class IngredientService {
     constructor(private ingredientRepo: IngredientRepo) {
@@ -33,5 +34,17 @@ export class IngredientService {
 
             resolve(ingredients);
         });
+    }
+    getIngredientByName(name: string): Promise<Ingredient> {
+
+        return new Promise<Ingredient>(async (resolve, reject) => {
+            let result = await this.ingredientRepo.getByName(name);
+
+            if(isEmptyObject(result)) {
+                reject(new DataNotFoundError());
+                return;
+            }
+            resolve(result);
+        })
     }
 }

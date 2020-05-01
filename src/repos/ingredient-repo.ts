@@ -13,7 +13,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
     //gets all ingredients and returns values in promise
     getAll(): Promise<Ingredient[]> {
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
         
             let ingredients: Ingredient[] = ingredientData;
             resolve(ingredients)
@@ -23,18 +23,12 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
     getByName(name: string): Promise<Ingredient> {
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
 
-            const ing = {...ingredientData.filter(ing => ing.name === name)[0]};
-
-            if(Object.keys(ing).length === 0) {
-                reject(new DataNotFoundError());
-                return
-            }
-
-            resolve(ing);
+            let ingredient = {...ingredientData.filter(ing => ing.name === name)[0]};
+            resolve(ingredient);
             
-        })
+        });
     }
 
     save(newIng: Ingredient): Promise<Ingredient> {
