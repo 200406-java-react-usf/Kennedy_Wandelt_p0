@@ -5,22 +5,18 @@ import ingredientData from '../data/ingredient-data'
 
 export class IngredientRepo implements CrudRepo<Ingredient> {
 
+    //gets all ingredients and returns values in promise
     getAll(): Promise<Ingredient[]> {
 
         return new Promise((resolve, reject) => {
         
-            let ingredients: Ingredient[] = [];
-
-            if(ingredientData.length === 0) {
-                reject(new DataNotFoundError());
-                return;
-            }
-
-            for(let ingredient of ingredientData) {
-                ingredients.push(ingredient);
-            }
+            let ingredients: Ingredient[] = ingredientData;
+            resolve(ingredients)
+            
         })
     }
+
+    
 
     getByName(name: string): Promise<Ingredient> {
 
