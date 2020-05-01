@@ -1,15 +1,9 @@
 import { CrudRepository as CrudRepo } from './crud-repo'
 import { Ingredient } from '../models/ingredient'
 import ingredientData from '../data/ingredient-data'
+
+
 export class IngredientRepo implements CrudRepo<Ingredient> {
-
-    private static instance: IngredientRepo;
-
-    private constructor() {}
-
-    static getInstance(): IngredientRepo {
-        return !IngredientRepo.instance ? IngredientRepo.instance = new IngredientRepo() : IngredientRepo.instance;
-    }
 
     getAll(): Promise<Ingredient[]> {
 
@@ -66,9 +60,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
         return new Promise<boolean>((resolve, reject) => {
 
-            for(let i = 0; i < ingredientData.length; i++) {
-                
-            }
+            
 
         })
 
