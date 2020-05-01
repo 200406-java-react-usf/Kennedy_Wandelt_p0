@@ -28,3 +28,18 @@ IngredientRouter.get('/:name', async (req, resp) => {
     }
     resp.send()
 });
+
+IngredientRouter.post('', async (req, resp) => {
+    console.log('POST REQUEST RECIEVED AT /users');
+    console.log(req.body);
+
+    let ingToAdd
+
+    try {
+        let newIng = await ingredientService.addNewIngredient(ingToAdd);
+        return resp.status(201).json(newIng);
+    } catch (e) {
+        return resp.status(e.statusCode).json(e);
+    }
+
+});

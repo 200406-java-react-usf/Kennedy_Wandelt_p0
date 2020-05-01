@@ -32,12 +32,12 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
     async getByName(name: string): Promise<Ingredient> {
 
-    let client : PoolClient;
+        let client : PoolClient;
         try{
             client = await connectionPool.connect();
-            let sql = `select * from ingredients where name = ${name}`;
-            let rs = await client.query(sql);
-            return rs.rows;
+            let sql = `select * from ingredients where name = $1`;
+            let rs = await client.query(sql, [name]);
+            return rs.rows[0];
         } catch (e) {
             throw new InternalServerError();
         } finally {
@@ -45,22 +45,21 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         }  
     }
 
-    save(newIng: Ingredient): Promise<Ingredient> {
+    async save(newIng: Ingredient): Promise<Ingredient> {
 
-        return new Promise<Ingredient>((resolve, reject) => {
-
-            // NEEDS VALIDATION
-            let conflict = ingredientData.filter(ing => ing.name == newIng.name).pop();
-
-            if(conflict) {
-                reject(new DataSaveError('This ingredient already exists.'));
-                return;
-            }
-
-            ingredientData.push(newIng);
-
-            resolve(newIng);
-        });
+        let client : PoolClient;
+        try {
+            client = await connectionPool.connect();
+            let sql = `insert into ingredients (name, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) 
+                       values ($1, $2, $3, $4, $5, $6)
+                       select * from ingredients where name = $1`
+            let rs = await client.query(sql, [newIng.name, newIng.unit, newIng.calories, newIng.carbs, newIng.protien, newIng.fats])
+            return rs.rows[0];
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     }
 
     deleteByName(name: string): Promise<boolean> {

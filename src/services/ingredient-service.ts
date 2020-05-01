@@ -7,7 +7,10 @@ import {
     DataNotFoundError,
     DataSaveError
 } from "../errors/errors"
-import { isEmptyObject } from "../util/validator";
+import { 
+    isEmptyObject, 
+    isValidObject
+} from "../util/validator";
 
 export class IngredientService {
     constructor(private ingredientRepo: IngredientRepo) {
@@ -15,31 +18,43 @@ export class IngredientService {
     }
 
     async getAllIngredients(): Promise<Ingredient[]> {
-        
-        try {
-        //create array of ingredients and use repo logic to get the ingredients
-            let ingredients = await this.ingredientRepo.getAll();
 
-            if (ingredients.length == 0) {
-                throw new DataNotFoundError();
-            }
-            return (ingredients);
-        } catch (e) {
-            throw e;
+    //create array of ingredients and use repo logic to get the ingredients
+        let ingredients = await this.ingredientRepo.getAll();
+
+        if (ingredients.length == 0) {
+            throw new DataNotFoundError();
         }
+        return (ingredients);
     }
 
+    async getIngredientByName(name: string): Promise<Ingredient> {
 
-    getIngredientByName(name: string): Promise<Ingredient> {
+        let ingredient = await this.ingredientRepo.getByName(name);
 
-        return new Promise<Ingredient>(async (resolve, reject) => {
-            let result = await this.ingredientRepo.getByName(name);
+        if(!ingredient) {
+            throw new DataNotFoundError();
+            return;
+        }
+        return(ingredient);
+    }
 
-            if(isEmptyObject(result)) {
-                reject(new DataNotFoundError());
-                return;
-            }
-            resolve(result);
-        })
+    async addNewIngredient(newIng: Ingredient): Promise<Ingredient> {
+
+        //validation valid object
+        if(!isValidObject(newIng)) {
+            throw new BadRequestError('Invalid property values found in provided user.');
+        }
+
+        let conflict = this.getIngredientByName(newIng.name);
+
+        if (conflict) {
+            throw new DataSaveError('An ingredient by this name already exists.');
+        }
+
+        const persistedIng = await this.ingredientRepo.save(newIng);
+
+        return persistedIng;
+        
     }
 }
