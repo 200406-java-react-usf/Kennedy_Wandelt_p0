@@ -32,29 +32,39 @@ export class IngredientService {
 
         let ingredient = await this.ingredientRepo.getByName(name);
 
-        if(!ingredient) {
+        if(isEmptyObject(ingredient)) {
             throw new DataNotFoundError();
-            return;
         }
         return(ingredient);
     }
 
     async addNewIngredient(newIng: Ingredient): Promise<Ingredient> {
 
-        //validation valid object
-        if(!isValidObject(newIng)) {
-            throw new BadRequestError('Invalid property values found in provided user.');
+        try{
+            if(!isValidObject(newIng)) {
+                throw new BadRequestError('Invalid property values found in provided user.');
+            }
+
+            let conflict = await this.getIngredientByName(newIng.name);
+
+            if (conflict) {
+                throw new DataSaveError('An ingredient by this name already exists.');
+            }
+
+            const persistedIng = await this.ingredientRepo.save(newIng);
+            return persistedIng;
+        } catch (e) {
+            throw(e);
+        }
+    }
+
+    async deleteIngredientByName(name: string): Promise<boolean> {
+
+        if(name.length === 0) {
+            throw new BadRequestError('Invalid name.');
         }
 
-        let conflict = this.getIngredientByName(newIng.name);
-
-        if (conflict) {
-            throw new DataSaveError('An ingredient by this name already exists.');
-        }
-
-        const persistedIng = await this.ingredientRepo.save(newIng);
-
-        return persistedIng;
-        
+        const isDeleted = await this.ingredientRepo.deleteByName(name);
+        return isDeleted;
     }
 }

@@ -2,6 +2,7 @@ import url from 'url';
 import express from 'express';
 import AppConfig from '../config/app';
 import { ParsedUrlQuery } from 'querystring';
+import {Ingredient} from '../models/ingredient';
 
 export const IngredientRouter = express.Router();
 
@@ -26,20 +27,34 @@ IngredientRouter.get('/:name', async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
-    resp.send()
+    resp.send();
 });
 
 IngredientRouter.post('', async (req, resp) => {
-    console.log('POST REQUEST RECIEVED AT /users');
+    console.log('POST REQUEST RECEIVED AT /ingredient');
     console.log(req.body);
 
-    let ingToAdd
-
     try {
-        let newIng = await ingredientService.addNewIngredient(ingToAdd);
-        return resp.status(201).json(newIng);
+        let newIng = await ingredientService.addNewIngredient(req.body);
+        resp.status(201).json(newIng);
     } catch (e) {
-        return resp.status(e.statusCode).json(e);
+        resp.status(e.statusCode).json(e);
     }
 
+    resp.send();
+
+});
+
+IngredientRouter.delete('', async (req, resp) => {
+    console.log('DELETE REQUEST RECEIVED AT /ingredient');
+    console.log(req.body);
+
+    try {
+        let ingToDelete = await ingredientService.deleteIngredientByName(req.body[0]);
+        resp.status(202).json(ingToDelete);
+    } catch (e) {
+        resp.status(e.statusCode).json(e);
+    }
+
+    resp.send();
 });

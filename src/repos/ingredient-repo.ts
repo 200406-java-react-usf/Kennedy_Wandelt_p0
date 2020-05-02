@@ -49,12 +49,16 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
         let client : PoolClient;
         try {
+
             client = await connectionPool.connect();
-            let sql = `insert into ingredients (name, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) 
-                       values ($1, $2, $3, $4, $5, $6)
-                       select * from ingredients where name = $1`
-            let rs = await client.query(sql, [newIng.name, newIng.unit, newIng.calories, newIng.carbs, newIng.protien, newIng.fats])
-            return rs.rows[0];
+
+            let sql = `insert into ingredients (name, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) values ($1, $2, $3, $4, $5, $6) returning id`;  
+
+            let rs = await client.query(sql, [newIng.name, newIng.unit, +newIng.calories, +newIng.carbs, +newIng.protien, +newIng.fats]);
+
+            newIng.id = rs.rows[0].id;
+            return newIng;
+
         } catch (e) {
             throw new InternalServerError();
         } finally {
@@ -62,14 +66,22 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         }
     }
 
-    deleteByName(name: string): Promise<boolean> {
+    async deleteByName(name: string): Promise<boolean> {
 
-        return new Promise<boolean>((resolve, reject) => {
+        let client : PoolClient;
 
+        try {
+
+            client = await connectionPool.connect();
+
+            let sql = `delete from ingredients where name = $1`;
+            let rs = await client.query(sql, [name]);
             
-
-        })
-
+            return true;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
     }
-
 }
