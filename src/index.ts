@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { Pool } from 'pg';
 import express from 'express';
 import { IngredientRouter } from './routers/ingredient-router';
-import { RecipeRouter } from '/routers/recipe-router';
+import { RecipeRouter } from './routers/recipe-router';
 //import { MealplanRouter} from '/routers/mealplan-router';
 
 //environment config
