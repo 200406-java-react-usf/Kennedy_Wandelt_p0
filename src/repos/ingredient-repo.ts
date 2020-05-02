@@ -1,6 +1,5 @@
 import { CrudRepository as CrudRepo } from './crud-repo';
 import { Ingredient } from '../models/ingredient';
-import ingredientData from '../data/ingredient-data';
 import {
     BadRequestError,
     DataNotFoundError,
