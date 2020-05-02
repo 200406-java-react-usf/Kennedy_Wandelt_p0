@@ -40,9 +40,7 @@ IngredientRouter.post('', async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
-
     resp.send();
-
 });
 
 IngredientRouter.delete('', async (req, resp) => {
@@ -50,11 +48,12 @@ IngredientRouter.delete('', async (req, resp) => {
     console.log(req.body);
 
     try {
-        let ingToDelete = await ingredientService.deleteIngredientByName(req.body[0]);
+        let ingToDelete = await ingredientService.deleteIngredientByName(req.body.name);
         resp.status(202).json(ingToDelete);
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
-
     resp.send();
 });
+
+
