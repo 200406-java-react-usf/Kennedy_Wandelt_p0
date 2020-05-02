@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { Pool } from 'pg';
 import express from 'express';
 import { IngredientRouter } from './routers/ingredient-router';
-//import { RecipeRouter } from '/routers/recipe-router';
+import { RecipeRouter } from '/routers/recipe-router';
 //import { MealplanRouter} from '/routers/mealplan-router';
 
 //environment config
@@ -23,6 +23,7 @@ const app = express();
 
 app.use('/', express.json());
 app.use('/ingredients', IngredientRouter);
+app.use('/recipes', RecipeRouter);
 
 app.listen(8080, () => {
     console.log('Application running and listening at: http://localhost:8080');

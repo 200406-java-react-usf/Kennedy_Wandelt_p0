@@ -1,8 +1,6 @@
 import url from 'url';
 import express from 'express';
 import AppConfig from '../config/app';
-import { ParsedUrlQuery } from 'querystring';
-import {Ingredient} from '../models/ingredient';
 
 export const IngredientRouter = express.Router();
 
