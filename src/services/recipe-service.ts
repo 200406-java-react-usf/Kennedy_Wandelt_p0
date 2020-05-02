@@ -14,4 +14,15 @@ export class RecipeService {
     constructor(private recipeRepo: RecipeRepo) {
         this.recipeRepo = recipeRepo;
     }
+
+    async getAllRecipes(): Promise<Recipe[]>{
+
+        let recipes = await this.recipeRepo.getAll();
+
+        if(recipes.length = 0) {
+            throw new DataNotFoundError();
+        }
+
+        return(recipes);
+    }
 }

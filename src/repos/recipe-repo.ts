@@ -2,7 +2,8 @@ import { CrudRepository } from './crud-repo';
 import { InternalServerError } from '../errors/errors';
 import { PoolClient } from 'pg';
 import { connectionPool } from '..';
-import { Recipe } from '../models/recipe'
+import { Recipe } from '../models/recipe';
+import { Ingredient } from '../models/ingredient';
 
 export class RecipeRepo implements CrudRepository<Recipe> {
     
@@ -12,7 +13,7 @@ export class RecipeRepo implements CrudRepository<Recipe> {
 
         try {
             client = await connectionPool.connect();
-            let sql = '';
+            let sql = 'select * from recipes';
             let rs = await client.query(sql);
             return rs.rows;
         } catch (e) {
@@ -22,14 +23,14 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
-    async getByName(): Promise<Recipe> {
+    async getByName(name: string): Promise<Recipe> {
 
         let client : PoolClient;
 
         try {
             client = await connectionPool.connect();
-            let sql = '';
-            let rs = await client.query(sql);
+            let sql = `Select * from recipes where name = $1`;
+            let rs = await client.query(sql, [name]);
             return rs.rows[0];
         } catch (e) {
             throw new InternalServerError();
@@ -44,7 +45,8 @@ export class RecipeRepo implements CrudRepository<Recipe> {
 
         try {
             client = await connectionPool.connect();
-            let sql = '';
+            let sql = `insert into recipes (name, servings)
+                        insert into recipe`;
             let rs = await client.query(sql);
             return rs.rows[0];
         } catch (e) {
