@@ -84,8 +84,8 @@ export class RecipeRepo implements CrudRepository<Recipe> {
 
         try {
             client = await connectionPool.connect();
-            let sql = '';
-            let rs = await client.query(sql);
+            let sql = `delete from recipes where recipe = $1`;
+            let rs = await client.query(sql, [name]);
             return true;
         } catch (e) {
             throw new InternalServerError();

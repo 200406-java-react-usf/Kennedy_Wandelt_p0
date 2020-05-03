@@ -52,4 +52,9 @@ export class RecipeService {
         //needs validation
         return(newRecipe)
     }
+
+    async deleteRecipeByName(recipeName: string): Promise<boolean> {
+
+        let isDeleted = await this.recipeRepo.deleteByName(recipeName);
+    }
 }
