@@ -1,7 +1,7 @@
 export class Ingredient {
 
     id: number;
-    name: string;
+    ingredient: string;
     unit: string;
     calories: number;
     carbs: number;
@@ -16,7 +16,7 @@ export class Ingredient {
 
     constructor (id: number, name: string, unit: string, calories: number, carbs: number, protien: number, fats: number) {
         this.id = id;
-        this.name = name;
+        this.ingredient = name;
         this.unit = unit;
         this.calories = calories;
         this.carbs = carbs;

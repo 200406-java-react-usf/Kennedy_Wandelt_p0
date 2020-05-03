@@ -4,11 +4,11 @@ import { Ingredient } from './ingredient';
 export class Recipe {
 
     id: number;
-    name: string;
+    recipe: string;
     servings: number;
 
     constructor(name: string, servings? : number) {
-        this.name = name;
+        this.recipe = name;
         this.servings = servings;
     }
 }

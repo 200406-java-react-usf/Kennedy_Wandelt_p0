@@ -41,17 +41,21 @@ export class IngredientService {
     async addNewIngredient(newIng: Ingredient): Promise<Ingredient> {
 
         try{
+            console.log(newIng)
+            console.log('Got to service 1');
             if(!isValidObject(newIng)) {
                 throw new BadRequestError('Invalid property values found in provided user.');
             }
+            console.log(2)
 
-            let conflict = await this.getIngredientByName(newIng.name);
-
+            let conflict = await this.getIngredientByName(newIng.ingredient);
+            console.log(conflict)
             if (conflict) {
                 throw new DataSaveError('An ingredient by this name already exists.');
             }
-
+            console.log(3)
             const persistedIng = await this.ingredientRepo.save(newIng);
+
             return persistedIng;
         } catch (e) {
             throw(e);

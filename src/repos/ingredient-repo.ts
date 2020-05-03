@@ -34,7 +34,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         let client : PoolClient;
         try{
             client = await connectionPool.connect();
-            let sql = `select * from ingredients where name = $1`;
+            let sql = `select * from ingredients where ingredient = $1`;
             let rs = await client.query(sql, [name]);
             return rs.rows[0];
         } catch (e) {
@@ -47,13 +47,14 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
     async save(newIng: Ingredient): Promise<Ingredient> {
 
         let client : PoolClient;
+
         try {
 
             client = await connectionPool.connect();
 
-            let sql = `insert into ingredients (name, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) values ($1, $2, $3, $4, $5, $6) returning id`;  
+            let sql = `insert into ingredients (ingredient, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) values ($1, $2, $3, $4, $5, $6) returning id`;  
 
-            let rs = await client.query(sql, [newIng.name, newIng.unit, +newIng.calories, +newIng.carbs, +newIng.protien, +newIng.fats]);
+            let rs = await client.query(sql, [newIng.ingredient, newIng.unit, +newIng.calories, +newIng.carbs, +newIng.protien, +newIng.fats]);
 
             newIng.id = rs.rows[0].id;
             return newIng;
