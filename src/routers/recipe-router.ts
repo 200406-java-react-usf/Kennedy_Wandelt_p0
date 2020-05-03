@@ -58,3 +58,16 @@ RecipeRouter.post('/:name', async (req, resp) => {
     }
     resp.send();
 });
+
+RecipeRouter.delete('', async (req, resp) => {
+    console.log('DELETE REQUEST RECIEVED AT /recipes');
+    console.log(req.body);
+
+    try{
+        let recipeToDelete = await recipeService.deleteRecipeByName(req.body.name);
+        resp.status(202).json(recipeToDelete);
+    } catch (e) {
+        resp.status(e.statusCode).json(e);
+    }
+    resp.send();
+})

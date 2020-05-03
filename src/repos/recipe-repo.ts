@@ -76,7 +76,6 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         } finally {
             client && client.release();
         }
-
     }
 
     async deleteByName(name: string): Promise<boolean> {
