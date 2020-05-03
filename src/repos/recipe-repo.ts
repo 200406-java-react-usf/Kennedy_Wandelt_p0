@@ -3,7 +3,7 @@ import { InternalServerError } from '../errors/errors';
 import { PoolClient } from 'pg';
 import { connectionPool } from '..';
 import { Recipe } from '../models/recipe';
-import { Ingredient } from '../models/ingredient';
+
 
 export class RecipeRepo implements CrudRepository<Recipe> {
     
@@ -30,7 +30,7 @@ export class RecipeRepo implements CrudRepository<Recipe> {
 
         try {
             client = await connectionPool.connect();
-            let sql = `select * from recipes where name = $1;`
+            let sql = `select * from recipes where recipe = $1;`
             let rs = await client.query(sql, [name]);
             return rs.rows[0];
         } catch (e) {
