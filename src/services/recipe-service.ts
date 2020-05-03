@@ -36,9 +36,9 @@ export class RecipeService {
 
         return(recipe);
     }
-    async addIngredientToRecipe(newIngId: number, recipeId: number, ratio: number): Promise<Recipe> {
+    async addIngredientToRecipe(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
 
-        let newRecipe = await this.recipeRepo.addIngredient(newIngId, recipeId, ratio);
+        let newRecipe = await this.recipeRepo.addIngredient(recipeName, ingName, ratio);
         
         //NEEDS VALIDATION
         return(newRecipe);
