@@ -83,8 +83,27 @@ describe('ingredientRepo', () => {
         expect(result).toBeTruthy();
         expect(result instanceof Array).toBe(true);
         expect(result.length).toBe(1);
+        expect(result[0] instanceof Ingredient).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
 
+
+    });
+
+    test('should give ingredient object when getByName() fetches from data source', async () => {
+        expect.hasAssertions();
+        //arrange
+
+        let mockIngredient = new Ingredient(1, 'ing', 'unit', 100, 10, 20, 30);
+        (mockMapper.mapIngredientResultSet as jest.Mock).mockReturnValue(mockIngredient);
+
+        //act
+
+        let result = await sut.getByName('ing');
+    
+        //assert
+
+        expect(result).toBeTruthy();
+        expect(result instanceof Ingredient).toBe(true);
 
     });
 });
