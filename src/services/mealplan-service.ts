@@ -11,12 +11,12 @@ import {
 } from '../util/validator';
 import { Recipe } from '../models/recipe';
 
-export class MealPlanServices {
+export class MealPlanService {
     constructor(private mealplanRepo: MealPlanRepo) {
         this.mealplanRepo = mealplanRepo;
     }
 
-    async getAllRecipes(): Promise<MealPlan[]>{
+    async getAllPlans(): Promise<MealPlan[]>{
 
         let plans = await this.mealplanRepo.getAll();
 
