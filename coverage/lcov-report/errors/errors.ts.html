@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">59.38% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/32</span>
+                <span class='fraction'>26/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">30% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>3/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">45.45% </span>
+                <span class="strong">72.73% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/11</span>
+                <span class='fraction'>8/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.57% </span>
+                <span class="strong">78.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/28</span>
+                <span class='fraction'>22/28</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -125,23 +125,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -163,11 +154,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,15 +184,15 @@
     reason: string;
     timestamp: Date;
 &nbsp;
-<span class="fstat-no" title="function not covered" >    constructor(s</span>tatusCode: number, rsn?: string) {
-<span class="cstat-no" title="statement not covered" >        this.statusCode = statusCode;</span>
-<span class="cstat-no" title="statement not covered" >        this.message = 'An unexpected error ocurred.';</span>
-<span class="cstat-no" title="statement not covered" >        this.timestamp = new Date();</span>
-<span class="cstat-no" title="statement not covered" >        rsn ? (this.reason = rsn) : this.reason = 'Unspecified reason.';</span>
+    constructor(statusCode: number, rsn?: string) {
+        this.statusCode = statusCode;
+        this.message = 'An unexpected error ocurred.';
+        this.timestamp = new Date();
+        rsn ? (<span class="branch-0 cbranch-no" title="branch not covered" >this.reason = rsn)</span> : this.reason = 'Unspecified reason.';
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    setMessage(</span>message:string) {
-<span class="cstat-no" title="statement not covered" >        this.message = message;</span>
+    setMessage(message:string) {
+        this.message = message;
     }
 }
 &nbsp;
@@ -225,9 +225,9 @@ class DataSaveError extends ApplicationError {
 &nbsp;
 class InternalServerError extends ApplicationError {
 &nbsp;
-<span class="fstat-no" title="function not covered" >    constructor(r</span>eason?: string) {
-<span class="cstat-no" title="statement not covered" >        super(500, reason);</span>
-<span class="cstat-no" title="statement not covered" >        super.setMessage('An unexpected error ocurred');</span>
+    constructor(reason?: string) {
+        super(500, reason);
+        super.setMessage('An unexpected error ocurred');
     }
 }
 &nbsp;
@@ -244,7 +244,7 @@ export {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun May 03 2020 23:39:24 GMT-0600 (Mountain Daylight Time)
+                at Mon May 04 2020 10:43:29 GMT-0600 (Mountain Daylight Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

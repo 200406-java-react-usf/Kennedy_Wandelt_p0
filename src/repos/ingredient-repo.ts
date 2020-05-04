@@ -77,7 +77,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
             let sql = `delete from ingredients where ingredient_name = $1`;
             let rs = await client.query(sql, [name]);
-            
+
             return true;
         } catch (e) {
             throw new InternalServerError();
