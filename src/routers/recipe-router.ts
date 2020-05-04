@@ -70,4 +70,17 @@ RecipeRouter.delete('', async (req, resp) => {
         resp.status(e.statusCode).json(e);
     }
     resp.send();
-})
+});
+
+RecipeRouter.put('', async (req, resp) => {
+    console.log('UPDATE REQUEST RECIEVED AT /recipes');
+    console.log(req.body);
+
+    try{
+        let updatedRecipe = await recipeService.updateRecipe(req.body);
+        resp.status(202).json(updatedRecipe);
+    } catch (e) {
+        resp.status(e.statusCode).json(e);
+    }
+    resp.send();
+});

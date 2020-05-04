@@ -57,6 +57,15 @@ export class RecipeService {
 
         let isDeleted = await this.recipeRepo.deleteByName(recipeName);
 
+        //validation
         return(isDeleted);
+    }
+
+    async updateRecipe(recipeToUpdate: Recipe): Promise<Recipe> {
+
+        let updatedRecipe = await this.recipeRepo.update(recipeToUpdate);
+
+        //validation
+        return(updatedRecipe);
     }
 }
