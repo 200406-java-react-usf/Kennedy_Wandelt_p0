@@ -106,4 +106,17 @@ describe('ingredientRepo', () => {
         expect(result instanceof Ingredient).toBe(true);
 
     });
+
+    test('should return new ingredient when save() adds a new Ingredient to teh data source', async () => {
+        expect.hasAssertions();
+        //arrange
+
+        let mockReturnIngredient = new Ingredient(1, 'ing', 'unit', 100, 10, 20, 30);
+        jest.mockReturn
+        let mockInputIngredient = new Ingredient(null,'ing', 'unit', 100, 10, 20, 30);
+
+        //act
+
+        let result = 
+    })
 });

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1588569953851" clover="3.2.0">
-  <project timestamp="1588569953852" name="All files">
-    <metrics statements="78" coveredstatements="39" conditionals="20" coveredconditionals="2" methods="19" coveredmethods="9" elements="117" coveredelements="50" complexity="0" loc="78" ncloc="78" packages="3" files="3" classes="3"/>
+<coverage generated="1588570764728" clover="3.2.0">
+  <project timestamp="1588570764733" name="All files">
+    <metrics statements="78" coveredstatements="44" conditionals="20" coveredconditionals="4" methods="19" coveredmethods="10" elements="117" coveredelements="58" complexity="0" loc="78" ncloc="78" packages="3" files="3" classes="3"/>
     <package name="errors">
       <metrics statements="28" coveredstatements="15" conditionals="10" coveredconditionals="0" methods="11" coveredmethods="5"/>
       <file name="errors.ts" path="C:\Users\wande\Documents\200406-java-react-usf\Kennedy_Wandelt_p0\src\errors\errors.ts">
@@ -41,20 +41,20 @@
       <file name="ingredient.ts" path="C:\Users\wande\Documents\200406-java-react-usf\Kennedy_Wandelt_p0\src\models\ingredient.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="22" count="1" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
         <line num="27" count="1" type="stmt"/>
       </file>
     </package>
     <package name="repos">
-      <metrics statements="41" coveredstatements="15" conditionals="10" coveredconditionals="2" methods="6" coveredmethods="2"/>
+      <metrics statements="41" coveredstatements="20" conditionals="10" coveredconditionals="4" methods="6" coveredmethods="3"/>
       <file name="ingredient-repo.ts" path="C:\Users\wande\Documents\200406-java-react-usf\Kennedy_Wandelt_p0\src\repos\ingredient-repo.ts">
-        <metrics statements="41" coveredstatements="15" conditionals="10" coveredconditionals="2" methods="6" coveredmethods="2"/>
+        <metrics statements="41" coveredstatements="20" conditionals="10" coveredconditionals="4" methods="6" coveredmethods="3"/>
         <line num="3" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
@@ -67,12 +67,12 @@
         <line num="27" count="0" type="stmt"/>
         <line num="29" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="33" count="1" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
-        <line num="44" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="44" count="1" type="cond" truecount="2" falsecount="0"/>
         <line num="48" count="1" type="stmt"/>
         <line num="54" count="0" type="stmt"/>
         <line num="56" count="0" type="stmt"/>
