@@ -1,7 +1,7 @@
-import { IngredientRepo } from '../repos/ingredient-repo';
+import { RecipeRepo } from '../repos/recipe-repo';
 import * as mockIndex from '..';
 import * as mockMapper from '../util/result-set-mapper';
-import { Ingredient } from '../models/ingredient';
+import { Recipe } from '../models/recipe';
 import { InternalServerError } from '../errors/errors';
 
 jest.mock('..', ()=> {
@@ -14,13 +14,13 @@ jest.mock('..', ()=> {
 
 jest.mock('../util/result-set-mapper', () => {
     return {
-        mapIngredientResultSet: jest.fn()
+        mapRecipeResultSet: jest.fn()
     }
 });
 
-describe('ingredientRepo', () => {
+describe('recipeRepo', () => {
 
-    let sut = new IngredientRepo();
+    let sut = new RecipeRepo();
     let mockConnect = mockIndex.connectionPool.connect;
 
     
@@ -32,12 +32,12 @@ describe('ingredientRepo', () => {
                         rows: [
                             {
                                 "id": "1",
-                                "ingredient_name": "ing",
-                                "unit": "unit",
-                                "calories_per_unit": "100",
-                                "carb_grams_per_unit": "1",
-                                "protien_grams_per_unit": "2",
-                                "fat_grams_per_unit": "3"
+                                "recipe_name": "recipe",
+                                "servings": "1",
+                                "total_cals_per_serving": null,
+                                "total_carbs_per_serving": null,
+                                "total_protien_per_serving": null,
+                                "total_fats_per_unit": null
                             }
                         ]
                     }
@@ -45,7 +45,7 @@ describe('ingredientRepo', () => {
                 release: jest.fn()
             }
         });
-        (mockMapper.mapIngredientResultSet as jest.Mock).mockClear();
+        (mockMapper.mapRecipeResultSet as jest.Mock).mockClear();
     });
     
 
@@ -70,12 +70,12 @@ describe('ingredientRepo', () => {
         expect(mockConnect).toBeCalledTimes(1);
     });
 
-    test('should give array of Ingredients when getAll() fetches from data source', async () => {
+    test('should give array of Recipes when getAll() fetches from data source', async () => {
         expect.hasAssertions();
         //arrange
 
-        let mockIngredient = new Ingredient(1, 'ing', 'unit', 100, 1, 2, 3);
-        (mockMapper.mapIngredientResultSet as jest.Mock).mockReturnValue(mockIngredient);
+        let mockRecipe = new Recipe(1, 'recipe', 1);
+        (mockMapper.mapRecipeResultSet as jest.Mock).mockReturnValue(mockRecipe);
         
         //act
 
@@ -86,47 +86,47 @@ describe('ingredientRepo', () => {
         expect(result).toBeTruthy();
         expect(result instanceof Array).toBe(true);
         expect(result.length).toBe(1);
-        expect(result[0] instanceof Ingredient).toBe(true);
+        expect(result[0] instanceof Recipe).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
 
 
     });
 
-    test('should give ingredient object when getByName() fetches from data source', async () => {
+    test('should give recipe object when getByName() fetches from data source', async () => {
         expect.hasAssertions();
         //arrange
 
-        let mockIngredient = new Ingredient(1, 'ing', 'unit', 100, 1, 2, 3);
-        (mockMapper.mapIngredientResultSet as jest.Mock).mockReturnValue(mockIngredient);
+        let mockRecipe = new Recipe(1, 'recipe', 1);
+        (mockMapper.mapRecipeResultSet as jest.Mock).mockReturnValue(mockRecipe);
 
         //act
 
-        let result = await sut.getByName('ing');
+        let result = await sut.getByName('recipe');
     
         //assert
 
         expect(result).toBeTruthy();
-        expect(result instanceof Ingredient).toBe(true);
+        expect(result instanceof Recipe).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
 
     });
 
     
 
-    test('should return new ingredient with a valid id when save() adds a new Ingredient to the data source', async () => {
+    test('should return new recipe with a valid id when save() adds a new recipe to the data source', async () => {
         expect.hasAssertions();
         //arrange
 
-        let mockInputIngredient = new Ingredient(null,'ing', 'unit', 100, 1, 2, 3);
+        let mockInputRecipe = new Recipe(null,'recip', 1);
         
         //act
 
-        let result = await sut.save(mockInputIngredient)
+        let result = await sut.save(mockInputRecipe)
         
         //assert
 
         expect(result).toBeTruthy();
-        expect(result instanceof Ingredient).toBe(true);
+        expect(result instanceof Recipe).toBe(true);
         expect(result.id).toBeTruthy();
         expect(mockConnect).toBeCalledTimes(1);
     });
@@ -141,22 +141,22 @@ describe('ingredientRepo', () => {
             }
         });
 
-        let result = await sut.deleteByName('ing');
+        let result = await sut.deleteByName('recipe');
 
         expect(result).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);   
     });
 
-    test('should return updated ingredient object when updateIngredient() is called', async () => {
+    test('should return updated recipe object when updateRecipe() is called', async () => {
         expect.hasAssertions();
 
-        let mockIngredient = new Ingredient(1,'ing', 'unit', 100, 1, 2, 3);
-        (mockMapper.mapIngredientResultSet as jest.Mock).mockReturnValue(mockIngredient);
+        let mockRecipe = new Recipe(1, 'recipe', 1);
+        (mockMapper.mapRecipeResultSet as jest.Mock).mockReturnValue(mockRecipe);
 
-        let result = await sut.updateIngredient(mockIngredient);
+        let result = await sut.update(mockRecipe);
 
         expect(result).toBeTruthy();
-        expect(result instanceof Ingredient).toBe(true);
+        expect(result instanceof Recipe).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
     });
 
@@ -186,7 +186,7 @@ describe('ingredientRepo', () => {
                 release: jest.fn()
             }
         });
-        let name = 'ing';
+        let name = 'recipe';
         try{
             await sut.getByName(name);
         } catch (e) {
@@ -203,9 +203,9 @@ describe('ingredientRepo', () => {
                 release: jest.fn()
             }
         });
-        let mockIngredient = new Ingredient(null,'ing', 'unit', 100, 1, 2, 3);
+        let mockRecipe = new Recipe(null, 'recipe', 1);
         try{
-            await sut.save(mockIngredient);
+            await sut.save(mockRecipe);
         } catch (e) {
             expect(e instanceof InternalServerError).toBe(true);
         }
