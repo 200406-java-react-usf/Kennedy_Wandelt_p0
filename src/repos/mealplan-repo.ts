@@ -30,7 +30,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
 
         try {
             client = await connectionPool.connect();
-            let sql = `select * from meal_plans where name = $1;`
+            let sql = `select * from meal_plans where mealplan_name = $1;`
             let rs = await client.query(sql, [name]);
             return rs.rows[0];
         } catch (e) {
@@ -47,7 +47,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
         try {
             client = await connectionPool.connect();
 
-            let sql = `insert into meal_plans (name, length) values ($1, $2) returning id`;
+            let sql = `insert into meal_plans (mealplan_name, length) values ($1, $2) returning id`;
 
             let rs = await client.query(sql, [newPlan.name, +newPlan.length]);
             newPlan = rs.rows[0].id;
@@ -65,8 +65,8 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
 
         try{
             client = await connectionPool.connect();
-            let mpId = await client.query(`select id from meal_plans where name = $1`, [mpName]);
-            let newRecipeId = await client.query(`select id from recipes where recipe = $1`, [recipeName]);
+            let mpId = await client.query(`select id from meal_plans where mealplan_name = $1`, [mpName]);
+            let newRecipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
             let sql = `insert into plan_recipes (meal_plan_id, recipe_id, times) values ($1, $2, $3)`;
             let rs = await client.query(sql, [mpId.rows[0].id, newRecipeId.rows[0].id, times]);
             let returnPlan = await this.getByName(mpName);
@@ -84,7 +84,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
 
         try {
             client = await connectionPool.connect();
-            let sql = `delete from meal_plans where name = $1`;
+            let sql = `delete from meal_plans where mealplan_name = $1`;
             let rs = await client.query(sql, [name]);
             return true;
         } catch (e) {
@@ -100,7 +100,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
 
         try {
             client = await connectionPool.connect();
-            let sql = 'update meal_plans set name = $1, length = $2 where id = $3';
+            let sql = 'update meal_plans set mealplan_name = $1, length = $2 where id = $3';
             let rs = await client.query(sql, [mpToUpdate.name, +mpToUpdate.length, +mpToUpdate.id]);
             return rs.rows[0];
         } catch (e) {

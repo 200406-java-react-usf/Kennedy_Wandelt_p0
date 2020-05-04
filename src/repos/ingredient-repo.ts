@@ -8,6 +8,7 @@ import {
 } from '../errors/errors';
 import { PoolClient } from 'pg';
 import { connectionPool } from '..';
+import { mapIngredientResultSet } from '../util/result-set-mapper';
 
 
 export class IngredientRepo implements CrudRepo<Ingredient> {
@@ -21,7 +22,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
             client = await connectionPool.connect();
             let sql = 'select * from ingredients';
             let rs = await client.query(sql);
-            return rs.rows;
+            return rs.rows.map(mapIngredientResultSet);
         } catch (e) {
             throw new InternalServerError();
         } finally {
@@ -34,9 +35,9 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         let client : PoolClient;
         try{
             client = await connectionPool.connect();
-            let sql = `select * from ingredients where ingredient = $1`;
+            let sql = `select * from ingredients where ingredient_name = $1`;
             let rs = await client.query(sql, [name]);
-            return rs.rows[0];
+            return mapIngredientResultSet(rs.rows[0]);
         } catch (e) {
             throw new InternalServerError();
         } finally {
@@ -52,7 +53,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
             client = await connectionPool.connect();
 
-            let sql = `insert into ingredients (ingredient, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) values ($1, $2, $3, $4, $5, $6) returning id`;  
+            let sql = `insert into ingredients (ingredient_name, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) values ($1, $2, $3, $4, $5, $6) returning id`;  
 
             let rs = await client.query(sql, [newIng.ingredient, newIng.unit, +newIng.calories, +newIng.carbs, +newIng.protien, +newIng.fats]);
 
@@ -74,7 +75,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
             client = await connectionPool.connect();
 
-            let sql = `delete from ingredients where name = $1`;
+            let sql = `delete from ingredients where ingredient_name = $1`;
             let rs = await client.query(sql, [name]);
             
             return true;
@@ -92,10 +93,10 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
             client = await connectionPool.connect();
 
-            let sql = `update ingredients set ingredient = $1, unit = $2, calories_per_unit = $3, carb_grams_per_unit = $4, protien_grams_per_unit = $5, fat_grams_per_unit = $6 where id = $7`
+            let sql = `update ingredients set ingredient_name = $1, unit = $2, calories_per_unit = $3, carb_grams_per_unit = $4, protien_grams_per_unit = $5, fat_grams_per_unit = $6 where id = $7`
             let rs = await client.query(sql, [ing.ingredient, ing.unit, +ing.calories, +ing.carbs, +ing.protien, +ing.fats, +ing.id])
 
-            return(ing);
+            return(mapIngredientResultSet(rs.rows[0]));
 
         } catch (e) {
             throw new InternalServerError();
