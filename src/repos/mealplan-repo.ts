@@ -5,7 +5,7 @@ import { connectionPool } from '..';
 import { MealPlan } from '../models/mealplan';
 
 
-export class MealplanRepo implements CrudRepository<MealPlan> {
+export class MealPlanRepo implements CrudRepository<MealPlan> {
     
     async getAll(): Promise<MealPlan[]> {
 
