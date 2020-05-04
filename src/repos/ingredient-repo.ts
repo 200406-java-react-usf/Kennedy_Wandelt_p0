@@ -84,6 +84,23 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
             client && client.release();
         }
     }
-}
 
-//update ingredients
+    async updateIngredient(ing: Ingredient): Promise<Ingredient> {
+
+        let client : PoolClient;
+        try {
+
+            client = await connectionPool.connect();
+
+            let sql = `update ingredients set ingredient = $1, calories = $2, carbs = $3, protien =  $4, fats = $5 where id = $6`
+            let rs = await client.query(sql, [ing.ingredient, ing.calories, ing.carbs, ing.protien, ing.fats, ing.id])
+
+            return(ing);
+
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
+    }
+}

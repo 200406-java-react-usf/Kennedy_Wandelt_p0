@@ -71,4 +71,12 @@ export class IngredientService {
         const isDeleted = await this.ingredientRepo.deleteByName(name);
         return isDeleted;
     }
+
+    async updateIngredient(ingredientToUpdate: Ingredient): Promise<Ingredient> {
+
+        //validation
+
+        const updatedIng = await this.ingredientRepo.updateIngredient(ingredientToUpdate);
+        return updatedIng;
+    }
 }

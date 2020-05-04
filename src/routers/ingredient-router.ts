@@ -46,12 +46,25 @@ IngredientRouter.delete('', async (req, resp) => {
     console.log(req.body);
 
     try {
-        let ingToDelete = await ingredientService.deleteIngredientByName(req.body.name);
-        resp.status(202).json(ingToDelete);
+        let isDeleted = await ingredientService.deleteIngredientByName(req.body.name);
+        resp.status(202).json(isDeleted);
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
     resp.send();
+});
+
+IngredientRouter.put('', async (req, resp) => {
+    console.log('PUT REQUEST RECIEVED AT /ingredients');
+    console.log(req.body);
+
+    try{
+        let updatedIng = await ingredientService.updateIngredient(req.body);
+        resp.status(202).json(updatedIng);
+
+    } catch (e) {
+        resp.status(e.statusCode).json(e);    
+    }
 });
 
 
