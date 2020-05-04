@@ -100,8 +100,8 @@ export class RecipeRepo implements CrudRepository<Recipe> {
 
         try {
             client = await connectionPool.connect();
-            let sql = 'update recipes set recipe = $1, servings = $2 where id = $';
-            let rs = await client.query(sql, [recipeToUpdate.recipe, recipeToUpdate.servings, recipeToUpdate.id]);
+            let sql = 'update recipes set recipe = $1, servings = $2 where id = $3';
+            let rs = await client.query(sql, [recipeToUpdate.recipe, +recipeToUpdate.servings, +recipeToUpdate.id]);
             return rs.rows[0];
         } catch (e) {
             throw new InternalServerError();

@@ -92,8 +92,8 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
             client = await connectionPool.connect();
 
-            let sql = `update ingredients set ingredient = $1, calories = $2, carbs = $3, protien =  $4, fats = $5 where id = $6`
-            let rs = await client.query(sql, [ing.ingredient, ing.calories, ing.carbs, ing.protien, ing.fats, ing.id])
+            let sql = `update ingredients set ingredient = $1, unit = $2, calories_per_unit = $3, carb_grams_per_unit = $4, protien_grams_per_unit = $5, fat_grams_per_unit = $6 where id = $7`
+            let rs = await client.query(sql, [ing.ingredient, ing.unit, +ing.calories, +ing.carbs, +ing.protien, +ing.fats, +ing.id])
 
             return(ing);
 
