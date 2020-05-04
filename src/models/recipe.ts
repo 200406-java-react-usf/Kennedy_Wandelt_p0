@@ -7,7 +7,8 @@ export class Recipe {
     recipe: string;
     servings: number;
 
-    constructor(name: string, servings? : number) {
+    constructor(id: number, name: string, servings? : number) {
+        this.id = id;
         this.recipe = name;
         this.servings = servings;
     }
