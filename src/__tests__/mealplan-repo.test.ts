@@ -1,7 +1,7 @@
-import { RecipeRepo } from '../repos/recipe-repo';
+import { MealPlanRepo } from '../repos/mealplan-repo';
 import * as mockIndex from '..';
 import * as mockMapper from '../util/result-set-mapper';
-import { Recipe } from '../models/recipe';
+import { MealPlan } from '../models/mealplan';
 import { InternalServerError } from '../errors/errors';
 
 jest.mock('..', ()=> {
@@ -14,13 +14,13 @@ jest.mock('..', ()=> {
 
 jest.mock('../util/result-set-mapper', () => {
     return {
-        mapRecipeResultSet: jest.fn()
+        mapMealPlanResultSet: jest.fn()
     }
 });
 
-describe('recipeRepo', () => {
+describe('mealplanRepo', () => {
 
-    let sut = new RecipeRepo();
+    let sut = new MealPlanRepo();
     let mockConnect = mockIndex.connectionPool.connect;
 
     
@@ -32,12 +32,8 @@ describe('recipeRepo', () => {
                         rows: [
                             {
                                 "id": "1",
-                                "recipe_name": "recipe",
-                                "servings": "1",
-                                "total_cals_per_serving": null,
-                                "total_carbs_per_serving": null,
-                                "total_protien_per_serving": null,
-                                "total_fats_per_unit": null
+                                "mealplan_name": "plan",
+                                "length": "1"
                             }
                         ]
                     }
@@ -45,7 +41,7 @@ describe('recipeRepo', () => {
                 release: jest.fn()
             }
         });
-        (mockMapper.mapRecipeResultSet as jest.Mock).mockClear();
+        (mockMapper.mapMealPlanResultSet as jest.Mock).mockClear();
     });
     
 
@@ -70,12 +66,12 @@ describe('recipeRepo', () => {
         expect(mockConnect).toBeCalledTimes(1);
     });
 
-    test('should give array of Recipes when getAll() fetches from data source', async () => {
+    test('should give array of Meal Plans when getAll() fetches from data source', async () => {
         expect.hasAssertions();
         //arrange
 
-        let mockRecipe = new Recipe(1, 'recipe', 1);
-        (mockMapper.mapRecipeResultSet as jest.Mock).mockReturnValue(mockRecipe);
+        let mockMealPlan = new MealPlan(1, 'plan', 7);
+        (mockMapper.mapMealPlanResultSet as jest.Mock).mockReturnValue(mockMealPlan);
         
         //act
 
@@ -87,47 +83,47 @@ describe('recipeRepo', () => {
         expect(result instanceof Array).toBe(true);
         expect(result.length).toBe(1);
         console.log(typeof(result[0]));
-        expect(result[0] instanceof Recipe).toBe(true);
+        expect(result[0] instanceof MealPlan).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
 
 
     });
 
-    test('should give recipe object when getByName() fetches from data source', async () => {
+    test('should give mealplan object when getByName() fetches from data source', async () => {
         expect.hasAssertions();
         //arrange
 
-        let mockRecipe = new Recipe(1, 'recipe', 1);
-        (mockMapper.mapRecipeResultSet as jest.Mock).mockReturnValue(mockRecipe);
+        let mockMealPlan = new MealPlan(1, 'plan', 7);
+        (mockMapper.mapMealPlanResultSet as jest.Mock).mockReturnValue(mockMealPlan);
 
         //act
 
-        let result = await sut.getByName('recipe');
+        let result = await sut.getByName('plan');
     
         //assert
 
         expect(result).toBeTruthy();
-        expect(result instanceof Recipe).toBe(true);
+        expect(result instanceof MealPlan).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
 
     });
 
     
 
-    test('should return new recipe with a valid id when save() adds a new recipe to the data source', async () => {
+    test('should return new meal plan with a valid id when save() adds a new recipe to the data source', async () => {
         expect.hasAssertions();
         //arrange
 
-        let mockInputRecipe = new Recipe(null,'recipe', 1);
+        let mockInputPlan = new MealPlan(null,'plan', 7);
         
         //act
 
-        let result = await sut.save(mockInputRecipe)
+        let result = await sut.save(mockInputPlan)
 
         //assert
 
         expect(result).toBeTruthy();
-        expect(result instanceof Recipe).toBe(true);
+        expect(result instanceof MealPlan).toBe(true);
         expect(result.id).toBeTruthy();
         expect(mockConnect).toBeCalledTimes(1);
     });
@@ -142,22 +138,22 @@ describe('recipeRepo', () => {
             }
         });
 
-        let result = await sut.deleteByName('recipe');
+        let result = await sut.deleteByName('plan');
 
         expect(result).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);   
     });
 
-    test('should return updated recipe object when updateRecipe() is called', async () => {
+    test('should return updated mealplan object when updatePlan() is called', async () => {
         expect.hasAssertions();
 
-        let mockRecipe = new Recipe(1, 'recipe', 1);
-        (mockMapper.mapRecipeResultSet as jest.Mock).mockReturnValue(mockRecipe);
+        let mockPlan = new MealPlan(1, 'plan', 7);
+        (mockMapper.mapMealPlanResultSet as jest.Mock).mockReturnValue(mockPlan);
 
-        let result = await sut.update(mockRecipe);
+        let result = await sut.update(mockPlan);
 
         expect(result).toBeTruthy();
-        expect(result instanceof Recipe).toBe(true);
+        expect(result instanceof MealPlan).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
     });
 
@@ -187,7 +183,7 @@ describe('recipeRepo', () => {
                 release: jest.fn()
             }
         });
-        let name = 'recipe';
+        let name = 'plan';
         try{
             await sut.getByName(name);
         } catch (e) {
@@ -204,9 +200,9 @@ describe('recipeRepo', () => {
                 release: jest.fn()
             }
         });
-        let mockRecipe = new Recipe(null, 'recipe', 1);
+        let mockPlan = new MealPlan(null, "plan", 7);
         try{
-            await sut.save(mockRecipe);
+            await sut.save(mockPlan);
         } catch (e) {
             expect(e instanceof InternalServerError).toBe(true);
         }

@@ -60,28 +60,28 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
-    async addIngredient(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
+    // async addIngredient(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
 
-        let client : PoolClient;
+    //     let client : PoolClient;
 
-        try{
-            client = await connectionPool.connect();
-            let recipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
+    //     try{
+    //         client = await connectionPool.connect();
+    //         let recipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
 
-            let newIngId = await client.query(`select id from ingredients where ingredient_name = $1`, [ingName]);
+    //         let newIngId = await client.query(`select id from ingredients where ingredient_name = $1`, [ingName]);
 
-            let sql = `insert into recipe_measurements (ingredient_id, recipe_id, ratio) values ($1, $2, $3)`;
-            let rs = await client.query(sql, [newIngId.rows[0].id, recipeId.rows[0].id, ratio]);
+    //         let sql = `insert into recipe_measurements (ingredient_id, recipe_id, ratio) values ($1, $2, $3)`;
+    //         let rs = await client.query(sql, [newIngId.rows[0].id, recipeId.rows[0].id, ratio]);
 
-            let returnRecipe = await this.getByName(recipeName);
-            return returnRecipe;
-        } catch (e) {
-            console.log(e);
-            throw new InternalServerError();
-        } finally {
-            client && client.release();
-        }
-    }
+    //         let returnRecipe = await this.getByName(recipeName);
+    //         return returnRecipe;
+    //     } catch (e) {
+    //         console.log(e);
+    //         throw new InternalServerError();
+    //     } finally {
+    //         client && client.release();
+    //     }
+    // }
 
     async deleteByName(name: string): Promise<boolean> {
 
