@@ -22,7 +22,7 @@ export class RecipeService {
         let recipes = await this.recipeRepo.getAll();
 
         if(recipes.length === 0) {
-            throw new DataNotFoundError();
+            throw new DataNotFoundError('No recipe data found at this time.');
         }
 
         return(recipes);
@@ -30,13 +30,15 @@ export class RecipeService {
     async getRecipeByName(name: string): Promise<Recipe>{
 
         if(!isValidString(name)){
-            throw new BadRequestError();
+            throw new BadRequestError('Invalid string given, unable to finish request');
         }
 
         let recipe =  await this.recipeRepo.getByName(name);
 
+        console.log(recipe)
+
         if(isEmptyObject(recipe)){
-            throw new DataNotFoundError();
+            throw new DataNotFoundError('A recipe by this name was not found, please try another name');
         }
 
         return(recipe);
@@ -53,18 +55,17 @@ export class RecipeService {
         
     
         if(!isValidObject(recipe,'id', 'servings', 'totalCals', 'totalCarbs', 'totalProtien', 'totalFats')) {
-            throw new BadRequestError();
+            throw new BadRequestError('Invalid recipe object given (is name field empty?');
         }
 
         let conflict = await this.getRecipeByName(recipe.name);
 
         if (conflict) {
-            throw new DataSaveError('An ingredient by this name already exists.');
+            throw new DataSaveError('A recipe by this name already exists.');
         }
 
         let newRecipe = await this.recipeRepo.save(recipe);
 
-        //needs validation
         return(newRecipe);
     }
 
@@ -83,7 +84,7 @@ export class RecipeService {
     async updateRecipe(recipeToUpdate: Recipe): Promise<Recipe> {
 
         if(!isValidObject(recipeToUpdate)) {
-            throw new BadRequestError('Invalid Ingredient Object');
+            throw new BadRequestError('Invalid Recipe Object');
         }
 
         let updatedRecipe = await this.recipeRepo.update(recipeToUpdate);

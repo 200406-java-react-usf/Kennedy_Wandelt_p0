@@ -97,12 +97,15 @@ describe('recipeService', () => {
 
     test('should resolve to a data not found error when getRecipeByName when an invalid name is given', async() => {
         expect.hasAssertions();
-        Validator.isValidString = jest.fn().mockReturnValue(false);
+        Validator.isValidString = jest.fn().mockReturnValue(true);
+        Validator.isEmptyObject = jest.fn().mockReturnValue(true);
+
+        mockRepo.getByName = jest.fn().mockReturnValue({});
 
         try {
-            await sut.getRecipeByName('');
+            await sut.getRecipeByName('rice');
         } catch (e) {
-            expect(e instanceof BadRequestError).toBe(true);
+            expect(e instanceof DataNotFoundError).toBe(true);
         }
     });
 
@@ -146,7 +149,7 @@ describe('recipeService', () => {
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(true);
         mockRepo.getByName = jest.fn().mockReturnValue(mockRecipes[4]);
-        mockRepo.getIngredientByName = jest.fn().mockReturnValue(mockRecipes[4]);
+        mockRepo.getRecipeByName = jest.fn().mockReturnValue(mockRecipes[4]);
         
         try{
             await sut.addNewRecipe({id: null, name: 'salad', servings: 1, totalCals: 500, totalCarbs: 50, totalProtien: 50, totalFats: 50})
