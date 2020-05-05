@@ -9,7 +9,8 @@ import {
 } from "../errors/errors"
 import { 
     isEmptyObject, 
-    isValidObject
+    isValidObject,
+    isValidString
 } from "../util/validator";
 
 export class IngredientService {
@@ -30,11 +31,16 @@ export class IngredientService {
 
     async getIngredientByName(name: string): Promise<Ingredient> {
 
+        if(!isValidString(name)) {
+            throw new BadRequestError();
+        }
+
         let ingredient = await this.ingredientRepo.getByName(name);
 
         if(isEmptyObject(ingredient)) {
             throw new DataNotFoundError();
         }
+
         return(ingredient);
     }
 

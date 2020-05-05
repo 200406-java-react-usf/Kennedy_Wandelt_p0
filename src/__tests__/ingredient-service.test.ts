@@ -56,7 +56,7 @@ describe('ingredientService', () => {
         expect(result.length).toBe(5);
     });
 
-    test('should reject with ResourceNotfounderror when getallIngredients fials to get any user from the data dource', async() => {
+    test('should reject with DataNotfoundError when getallIngredients fials to get any user from the data dource', async() => {
         expect.hasAssertions();
         mockRepo.getAll = jest.fn().mockReturnValue([]);
 
@@ -65,6 +65,23 @@ describe('ingredientService', () => {
         } catch (e) {
             expect(e instanceof DataNotFoundError).toBe(true);
         }
+    });
+
+    test('should resolve to Ingredient when getIngredientByName is given a valid a known name', async() => {
+        expect.hasAssertions();
+        Validator.isValidString = jest.fn().mockReturnValue(true);
+
+        mockRepo.getByName = jest.fn().mockImplementation((name: string) => {
+            return new Promise<Ingredient>((resolve) => resolve(mockIngredients[0]));
+        });
+
+        Validator.isEmptyObject = jest.fn().mockReturnValue(false);
+
+        let result = await sut.getIngredientByName('bread');
+
+        expect(result).toBeTruthy();
+        expect(result.id).toBe(1);
+        expect(result.name).toBe('bread');
     });
 
 });
