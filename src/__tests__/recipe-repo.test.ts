@@ -86,6 +86,7 @@ describe('recipeRepo', () => {
         expect(result).toBeTruthy();
         expect(result instanceof Array).toBe(true);
         expect(result.length).toBe(1);
+        console.log(typeof(result[0]));
         expect(result[0] instanceof Recipe).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
 
@@ -117,12 +118,12 @@ describe('recipeRepo', () => {
         expect.hasAssertions();
         //arrange
 
-        let mockInputRecipe = new Recipe(null,'recip', 1);
+        let mockInputRecipe = new Recipe(null,'recipe', 1);
         
         //act
 
         let result = await sut.save(mockInputRecipe)
-        
+
         //assert
 
         expect(result).toBeTruthy();
@@ -210,4 +211,11 @@ describe('recipeRepo', () => {
             expect(e instanceof InternalServerError).toBe(true);
         }
     });
+    test('Should return recipe when a new ingredient is added to the recipe ', async() => {
+        expect.hasAssertions();
+
+        
+
+        await sut.addIngredient('recipe', 'ingredient', 1)
+    })
 });

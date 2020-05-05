@@ -47,13 +47,12 @@ RecipeRouter.post('', async (req, resp) => {
 
 RecipeRouter.post('/:name', async (req, resp) => {
     const name = req.params.name;
-    console.log(`POST REQUEST RECIEVED AT /recipes/${name}`);
-    console.log(req.body);
 
     try {
-        let addedIngredient = await recipeService.addIngredientToRecipe(name, req.body.ingredient, +req.body.ratio);
+        let addedIngredient = await recipeService.addIngredientToRecipe(name, req.body.ingredient_name, +req.body.ratio);
         resp.status(201).json(addedIngredient);
     } catch(e) {
+
         resp.status(e.statusCode).json(e);
     }
     resp.send();
