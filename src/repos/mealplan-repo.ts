@@ -3,6 +3,7 @@ import { InternalServerError } from '../errors/errors';
 import { PoolClient } from 'pg';
 import { connectionPool } from '..';
 import { MealPlan } from '../models/mealplan';
+import { mapMealPlanResultSet } from '../util/result-set-mapper';
 
 
 export class MealPlanRepo implements CrudRepository<MealPlan> {
@@ -16,7 +17,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
 
             let rs = await client.query(sql);
 
-            return(rs.rows);
+            return(rs.rows.map(mapMealPlanResultSet));
         } catch (e) {
             throw new InternalServerError();
         } finally {
@@ -32,7 +33,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
             client = await connectionPool.connect();
             let sql = `select * from meal_plans where mealplan_name = $1;`
             let rs = await client.query(sql, [name]);
-            return rs.rows[0];
+            return mapMealPlanResultSet(rs.rows[0]);
         } catch (e) {
             throw new InternalServerError();
         } finally {
@@ -50,7 +51,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
             let sql = `insert into meal_plans (mealplan_name, length) values ($1, $2) returning id`;
 
             let rs = await client.query(sql, [newPlan.name, +newPlan.length]);
-            newPlan = rs.rows[0].id;
+            newPlan.id = rs.rows[0].id;
             return newPlan;
         } catch (e) {
             throw new InternalServerError();
@@ -59,24 +60,24 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
         }
     }
 
-    async addRecipe(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
+    // async addRecipe(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
 
-        let client : PoolClient;
+    //     let client : PoolClient;
 
-        try{
-            client = await connectionPool.connect();
-            let mpId = await client.query(`select id from meal_plans where mealplan_name = $1`, [mpName]);
-            let newRecipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
-            let sql = `insert into plan_recipes (meal_plan_id, recipe_id, times) values ($1, $2, $3)`;
-            let rs = await client.query(sql, [mpId.rows[0].id, newRecipeId.rows[0].id, times]);
-            let returnPlan = await this.getByName(mpName);
-            return returnPlan;
-        } catch (e) {
-            throw new InternalServerError();
-        } finally {
-            client && client.release();
-        }
-    }
+    //     try{
+    //         client = await connectionPool.connect();
+    //         let mpId = await client.query(`select id from meal_plans where mealplan_name = $1`, [mpName]);
+    //         let newRecipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
+    //         let sql = `insert into plan_recipes (meal_plan_id, recipe_id, times) values ($1, $2, $3)`;
+    //         let rs = await client.query(sql, [mpId.rows[0].id, newRecipeId.rows[0].id, times]);
+    //         let returnPlan = await this.getByName(mpName);
+    //         return returnPlan;
+    //     } catch (e) {
+    //         throw new InternalServerError();
+    //     } finally {
+    //         client && client.release();
+    //     }
+    // }
 
     async deleteByName(name: string): Promise<boolean> {
 
@@ -102,7 +103,7 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
             client = await connectionPool.connect();
             let sql = 'update meal_plans set mealplan_name = $1, length = $2 where id = $3';
             let rs = await client.query(sql, [mpToUpdate.name, +mpToUpdate.length, +mpToUpdate.id]);
-            return rs.rows[0];
+            return mapMealPlanResultSet(rs.rows[0]);
         } catch (e) {
             throw new InternalServerError();
         } finally {
