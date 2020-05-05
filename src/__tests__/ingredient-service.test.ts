@@ -167,7 +167,18 @@ describe('ingredientService', () => {
 
         expect(result).toBe(true);   
     });
-    //BadRequest Error delete
+
+    test('should return BadRequestError when deleteIngredientbyName is given bad string', async() => {
+        expect.hasAssertions();
+        Validator.isValidString=jest.fn().mockReturnValue(false);
+
+        try{
+            await sut.deleteIngredientByName('');
+        } catch (e) {
+            expect(e instanceof BadRequestError).toBe(true);
+        }  
+    });
+
     test('should return new ingredient when updateIngredient is given valid Ingredient', async() => {
         expect.hasAssertions();
         Validator.isValidObject = jest.fn().mockReturnValue(true);
@@ -178,6 +189,17 @@ describe('ingredientService', () => {
         expect(result).toBe(mockIngredients[4]);
         expect(result).toBeTruthy;
         expect(result instanceof Ingredient).toBe(true);
+    });
+
+    test('should return BadRequestError when updateIngredient is given invalid object', async() => {
+        expect.hasAssertions();
+        Validator.isValidObject=jest.fn().mockReturnValue(false);
+
+        try{
+            await sut.updateIngredient({id: null, name: 'chicken', unit: "oz", calories: 400, carbs: 40, protien: 40, fats: 40});
+        } catch (e) {
+            expect(e instanceof BadRequestError).toBe(true);
+        }  
     });
 
 });
