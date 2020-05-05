@@ -158,4 +158,13 @@ describe('ingredientService', () => {
         }
     });
 
+    test('should return true when deleteIngredientbyName is given valid Ingredient name', async() => {
+        expect.hasAssertions();
+        Validator.isValidString=jest.fn().mockReturnValue(true);
+
+        let result = await sut.deleteIngredientByName('orange');
+
+        expect(result).toBe(true);   
+    });
+
 });

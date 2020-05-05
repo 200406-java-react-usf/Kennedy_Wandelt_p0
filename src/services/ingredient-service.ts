@@ -69,7 +69,7 @@ export class IngredientService {
 
     async deleteIngredientByName(name: string): Promise<boolean> {
 
-        if(name.length === 0) {
+        if(!isValidString) {
             throw new BadRequestError('Invalid name.');
         }
 
