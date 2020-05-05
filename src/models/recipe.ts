@@ -4,12 +4,20 @@ import { Ingredient } from './ingredient';
 export class Recipe {
 
     id: number;
-    recipe: string;
+    name: string;
     servings: number;
+    totalCals: number;
+    totalCarbs: number;
+    totalProtien: number;
+    totalFats: number;
 
-    constructor(id: number, name: string, servings? : number) {
+    constructor(id: number, name: string, servings? : number, totalCals?: number, totalCarbs?: number, totalProtien?:number, totalFats?:number) {
         this.id = id;
-        this.recipe = name;
+        this.name = name;
         this.servings = servings;
+        this.totalCals = totalCals;
+        this.totalCarbs = totalCarbs;
+        this.totalProtien = totalProtien;
+        this.totalFats = totalFats;
     }
 }

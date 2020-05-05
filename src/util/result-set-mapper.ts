@@ -30,7 +30,11 @@ export function mapRecipeResultSet(resultSet: RecipeSchema): Recipe {
     return new Recipe(
         resultSet.id,
         resultSet.recipe_name,
-        resultSet.servings
+        resultSet.servings,
+        resultSet.total_cals_per_serving,
+        resultSet.total_carbs_per_serving,
+        resultSet.total_protien_per_serving,
+        resultSet.total_fats_per_serving
     )
 };
 export function mapMealPlanResultSet(resultSet: MealPlanSchema): MealPlan {
