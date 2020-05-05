@@ -81,32 +81,26 @@ describe('recipeService', () => {
 
         expect(result).toBeTruthy();
         expect(result.id).toBe(1);
-        expect(result.).toBe('bread');
+        expect(result.name).toBe('sandwich');
     });
 
-    test('should resolve to a bad request error when getIngredientByName is given somehting other than a name ', async() => {
+    test('should resolve to a bad request error when getRecipeByName is given somehting other than a name ', async() => {
         expect.hasAssertions();
         Validator.isValidString = jest.fn().mockReturnValue(false);
 
         try {
-            await sut.getIngredientByName('');
+            await sut.getRecipeByName('');
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
         }
     });
 
-    test('should resolve to a data not found error when getIngredientByName when an invalid name is given', async() => {
+    test('should resolve to a data not found error when getRecipeByName when an invalid name is given', async() => {
         expect.hasAssertions();
-        Validator.isValidString = jest.fn().mockReturnValue(true);
-
-        mockRepo.getByName = jest.fn().mockImplementation((name: string) => {
-            return new Promise<Ingredient>((resolve) => resolve(mockIngredients[0]));
-        });
-
-        Validator.isEmptyObject = jest.fn().mockReturnValue(false);
+        Validator.isValidString = jest.fn().mockReturnValue(false);
 
         try {
-            await sut.getIngredientByName('');
+            await sut.getRecipeByName('');
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
         }
@@ -120,15 +114,15 @@ describe('recipeService', () => {
         mockRepo.getIngredientByName = jest.fn().mockReturnValue(false);
         mockRepo.getByName = jest.fn().mockReturnValue(false);
 
-        mockRepo.save = jest.fn().mockImplementation((ing: Ingredient) => {
-            return new Promise<Ingredient>((resolve) => resolve(mockIngredients[2]));
+        mockRepo.save = jest.fn().mockImplementation((recipe: Recipe) => {
+            return new Promise<Recipe>((resolve) => resolve(mockRecipes[2]));
         });
 
-        let result = await sut.addNewIngredient({id: null, name: 'milk', unit: "cup", calories: 300, carbs: 30, protien: 30, fats: 30})
+        let result = await sut.addNewRecipe({id: null, name: 'soup', servings: 1, totalCals: 300, totalCarbs: 30, totalProtien: 30, totalFats: 30})
 
         expect(result).toBeTruthy();
         expect(result.id).toBe(3);
-        expect(result instanceof Ingredient).toBe(true);
+        expect(result instanceof Recipe).toBe(true);
 
     });
     
@@ -138,7 +132,7 @@ describe('recipeService', () => {
         Validator.isValidObject=jest.fn().mockReturnValue(false);
 
         try {
-            await sut.addNewIngredient({id: null, name: 'milk', unit: "cup", calories: null, carbs: 30, protien: 30, fats: 30})
+            await sut.addNewRecipe({id: null, name: 'soup', servings: 1, totalCals: 300, totalCarbs: 30, totalProtien: 30, totalFats: 30})
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
         }
@@ -148,47 +142,47 @@ describe('recipeService', () => {
 
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(true);
-        mockRepo.getByName = jest.fn().mockReturnValue(mockIngredients[4]);
-        mockRepo.getIngredientByName = jest.fn().mockReturnValue(mockIngredients[4]);
+        mockRepo.getByName = jest.fn().mockReturnValue(mockRecipes[4]);
+        mockRepo.getIngredientByName = jest.fn().mockReturnValue(mockRecipes[4]);
         
         try{
-            await sut.addNewIngredient({id: null, name: 'orange', unit: "unit", calories: 500, carbs: 50, protien: 50, fats: 50})
+            await sut.addNewRecipe({id: null, name: 'salad', servings: 1, totalCals: 500, totalCarbs: 50, totalProtien: 50, totalFats: 50})
         } catch (e) {
             expect(e instanceof DataSaveError).toBe(true);
         }
     });
 
-    test('should return true when deleteIngredientbyName is given valid Ingredient name', async() => {
+    test('should return true when deleteRecipebyName is given valid Recipe name', async() => {
         expect.hasAssertions();
         Validator.isValidString=jest.fn().mockReturnValue(true);
         mockRepo.deleteByName = jest.fn().mockReturnValue(true);
 
-        let result = await sut.deleteIngredientByName('orange');
+        let result = await sut.deleteRecipeByName('salad');
 
         expect(result).toBe(true);   
     });
 
-    test('should return BadRequestError when deleteIngredientbyName is given bad string', async() => {
+    test('should return BadRequestError when deleteRecipebyName is given bad string', async() => {
         expect.hasAssertions();
         Validator.isValidString=jest.fn().mockReturnValue(false);
 
         try{
-            await sut.deleteIngredientByName('');
+            await sut.deleteRecipeByName('');
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
         }  
     });
 
-    test('should return new ingredient when updateIngredient is given valid Ingredient', async() => {
+    test('should return new recipe when updateRecipe is given valid Ingredient', async() => {
         expect.hasAssertions();
         Validator.isValidObject = jest.fn().mockReturnValue(true);
-        mockRepo.updateIngredient = jest.fn().mockReturnValue(mockIngredients[4]);
+        mockRepo.update = jest.fn().mockReturnValue(mockRecipes[4]);
 
-        let result = await sut.updateIngredient(mockIngredients[4]);
+        let result = await sut.updateRecipe(mockRecipes[4]);
 
-        expect(result).toBe(mockIngredients[4]);
+        expect(result).toBe(mockRecipes[4]);
         expect(result).toBeTruthy;
-        expect(result instanceof Ingredient).toBe(true);
+        expect(result instanceof Recipe).toBe(true);
     });
 
     test('should return BadRequestError when updateIngredient is given invalid object', async() => {
@@ -196,7 +190,7 @@ describe('recipeService', () => {
         Validator.isValidObject=jest.fn().mockReturnValue(false);
 
         try{
-            await sut.updateIngredient({id: null, name: 'chicken', unit: "oz", calories: 400, carbs: 40, protien: 40, fats: 40});
+            await sut.updateRecipe({id: 5, name: 'salad', servings: null, totalCals: 400, totalCarbs: 40, totalProtien: 40, totalFats: 40});
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
         }  

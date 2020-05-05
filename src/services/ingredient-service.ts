@@ -47,7 +47,6 @@ export class IngredientService {
     async addNewIngredient(newIng: Ingredient): Promise<Ingredient> {
 
         try{
-            console.log(newIng)
 
             if(!isValidObject(newIng,'id')) {
                 throw new BadRequestError('Invalid property values found in provided user.');

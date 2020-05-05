@@ -50,7 +50,7 @@ export class RecipeRepo implements CrudRepository<Recipe> {
 
             let sql = `insert into recipes (recipe_name, servings) values ($1, $2) returning id`;
 
-            let rs = await client.query(sql, [newRecipe.recipe, +newRecipe.servings]);
+            let rs = await client.query(sql, [newRecipe.name, +newRecipe.servings]);
             newRecipe.id = rs.rows[0].id;
             return newRecipe;
         } catch (e) {
@@ -106,7 +106,7 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         try {
             client = await connectionPool.connect();
             let sql = 'update recipes set recipe_name = $1, servings = $2 where id = $3';
-            let rs = await client.query(sql, [recipeToUpdate.recipe, +recipeToUpdate.servings, +recipeToUpdate.id]);
+            let rs = await client.query(sql, [recipeToUpdate.name, +recipeToUpdate.servings, +recipeToUpdate.id]);
             return mapRecipeResultSet(rs.rows[0]);
         } catch (e) {
             throw new InternalServerError();

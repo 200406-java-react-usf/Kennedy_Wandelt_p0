@@ -7,7 +7,8 @@ import {
 } from '../errors/errors';
 import {
     isEmptyObject,
-    isValidObject
+    isValidObject,
+    isValidString
 } from '../util/validator';
 import { Ingredient } from '../models/ingredient';
 
@@ -46,26 +47,44 @@ export class RecipeService {
 
     async addNewRecipe(recipe: Recipe): Promise<Recipe> {
         
-        let newRecipe = await this.recipeRepo.save(recipe);
         
+
+        if(!isValidObject(recipe,'id', 'servings', 'totalCals', 'totalCarbs', 'totalProtien', 'totalFats')) {
+            throw new BadRequestError('Invalid property values found in provided recipe.');
+        }
+
+        let conflict = await this.getRecipeByName(recipe.name);
+
+        if (conflict) {
+            throw new DataSaveError('An ingredient by this name already exists.');
+        }
+
+        let newRecipe = await this.recipeRepo.save(recipe);
 
         //needs validation
         return(newRecipe);
     }
 
-    async deleteRecipeByName(recipeName: string): Promise<boolean> {
+    async deleteRecipeByName(name: string): Promise<boolean> {
 
-        let isDeleted = await this.recipeRepo.deleteByName(recipeName);
 
-        //validation
+        if(!isValidString(name)) {
+            throw new BadRequestError('Invalid name.');
+        }
+
+        let isDeleted = await this.recipeRepo.deleteByName(name);
+
         return(isDeleted);
     }
 
     async updateRecipe(recipeToUpdate: Recipe): Promise<Recipe> {
 
+        if(!isValidObject(recipeToUpdate)) {
+            throw new BadRequestError('Invalid Ingredient Object');
+        }
+
         let updatedRecipe = await this.recipeRepo.update(recipeToUpdate);
 
-        //validation
         return(updatedRecipe);
     }
 }
