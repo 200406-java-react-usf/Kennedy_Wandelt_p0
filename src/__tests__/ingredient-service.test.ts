@@ -84,4 +84,32 @@ describe('ingredientService', () => {
         expect(result.name).toBe('bread');
     });
 
+    test('should resolve to a bad request error when getIngredientByName is given somehting other than a name ', async() => {
+        expect.hasAssertions();
+        Validator.isValidString = jest.fn().mockReturnValue(false);
+
+        try {
+            await sut.getIngredientByName('');
+        } catch (e) {
+            expect(e instanceof BadRequestError);
+        }
+    });
+
+    test('should resolve to a data not found error when getIngredientByName when an invalid name is given', async() => {
+        expect.hasAssertions();
+        Validator.isValidString = jest.fn().mockReturnValue(true);
+
+        mockRepo.getByName = jest.fn().mockImplementation((name: string) => {
+            return new Promise<Ingredient>((resolve) => resolve(mockIngredients[0]));
+        });
+
+        Validator.isEmptyObject = jest.fn().mockReturnValue(false);
+
+        try {
+            await sut.getIngredientByName('');
+        } catch (e) {
+            expect(e instanceof BadRequestError);
+        }
+    });
+
 });
