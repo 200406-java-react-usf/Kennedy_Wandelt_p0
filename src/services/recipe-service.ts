@@ -35,21 +35,20 @@ export class RecipeService {
 
         let recipe =  await this.recipeRepo.getByName(name);
 
-        console.log(recipe)
-
         if(isEmptyObject(recipe)){
             throw new DataNotFoundError('A recipe by this name was not found, please try another name');
         }
 
         return(recipe);
     }
-    // async addIngredientToRecipe(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
-    //     console.log(recipeName, ingName, ratio)
-    //     let newRecipe = await this.recipeRepo.addIngredient(recipeName, ingName, ratio);
+
+    async addIngredientToRecipe(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
+
+        let newRecipe = await this.recipeRepo.addIngredient(recipeName, ingName, ratio);
         
-    //     //NEEDS VALIDATION
-    //     return(newRecipe);
-    // }
+        //NEEDS VALIDATION
+        return(newRecipe);
+    }
 
     async addNewRecipe(recipe: Recipe): Promise<Recipe> {
         
@@ -58,7 +57,7 @@ export class RecipeService {
             throw new BadRequestError('Invalid recipe object given (is name field empty?');
         }
 
-        let conflict = await this.getRecipeByName(recipe.name);
+        let conflict = await this.recipeRepo.getByName(recipe.name);
 
         if (conflict) {
             throw new DataSaveError('A recipe by this name already exists.');

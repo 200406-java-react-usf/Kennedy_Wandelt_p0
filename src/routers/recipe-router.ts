@@ -45,18 +45,18 @@ RecipeRouter.post('', async (req, resp) => {
     resp.send();
 });
 
-// RecipeRouter.post('/:name', async (req, resp) => {
-//     const name = req.params.name;
+RecipeRouter.post('/:name', async (req, resp) => {
+    const name = req.params.name;
 
-//     try {
-//         let addedIngredient = await recipeService.addIngredientToRecipe(name, req.body.ingredient_name, +req.body.ratio);
-//         resp.status(201).json(addedIngredient);
-//     } catch(e) {
+    try {
+        let addedIngredient = await recipeService.addIngredientToRecipe(name, req.body.ingredient_name, +req.body.ratio);
+        resp.status(201).json(addedIngredient);
+    } catch(e) {
 
-//         resp.status(e.statusCode).json(e);
-//     }
-//     resp.send();
-// });
+        resp.status(e.statusCode).json(e);
+    }
+    resp.send();
+});
 
 RecipeRouter.delete('', async (req, resp) => {
     console.log('DELETE REQUEST RECIEVED AT /recipes');

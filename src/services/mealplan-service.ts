@@ -39,13 +39,14 @@ export class MealPlanService {
 
         return(mp);
     }
-    // async addRecipeToPlan(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
 
-    //     let newPlan = await this.mealplanRepo.addRecipe(mpName, recipeName, times);
+    async addRecipeToPlan(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
+
+        let newPlan = await this.mealplanRepo.addRecipe(mpName, recipeName, times);
         
-    //     //NEEDS VALIDATION
-    //     return(newPlan);
-    // }
+        //NEEDS VALIDATION
+        return(newPlan);
+    }
 
     async addNewPlan(mp: MealPlan): Promise<MealPlan> {
 
@@ -53,7 +54,7 @@ export class MealPlanService {
             throw new BadRequestError('Invalid MealPlan object recieved (Are name and length fields empty?)');
         }
 
-        let conflict = await this.getPlanByName(mp.name);
+        let conflict = await this.mealplanRepo.getByName(mp.name);
 
         if (conflict) {
             throw new DataSaveError('A meal plan by this name already exists.');

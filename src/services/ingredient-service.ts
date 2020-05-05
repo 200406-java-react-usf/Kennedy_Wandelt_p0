@@ -52,7 +52,7 @@ export class IngredientService {
                 throw new BadRequestError('Invalid property values found in provided user.');
             }
 
-            let conflict = await this.getIngredientByName(newIng.name);
+            let conflict = await this.ingredientRepo.getByName(newIng.name);
 
             if (conflict) {
                 throw new DataSaveError('An ingredient by this name already exists.');

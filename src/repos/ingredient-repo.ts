@@ -55,7 +55,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
 
             let sql = `insert into ingredients (ingredient_name, unit, calories_per_unit, carb_grams_per_unit, protien_grams_per_unit, fat_grams_per_unit) values ($1, $2, $3, $4, $5, $6) returning id`;  
 
-            let rs = await client.query(sql, [newIng.ingredient, newIng.unit, +newIng.calories, +newIng.carbs, +newIng.protien, +newIng.fats]);
+            let rs = await client.query(sql, [newIng.name, newIng.unit, +newIng.calories, +newIng.carbs, +newIng.protien, +newIng.fats]);
 
             newIng.id = rs.rows[0].id;
             return newIng;
@@ -94,7 +94,7 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
             client = await connectionPool.connect();
 
             let sql = `update ingredients set ingredient_name = $1, unit = $2, calories_per_unit = $3, carb_grams_per_unit = $4, protien_grams_per_unit = $5, fat_grams_per_unit = $6 where id = $7`
-            let rs = await client.query(sql, [ing.ingredient, ing.unit, +ing.calories, +ing.carbs, +ing.protien, +ing.fats, +ing.id])
+            let rs = await client.query(sql, [ing.name, ing.unit, +ing.calories, +ing.carbs, +ing.protien, +ing.fats, +ing.id])
 
             return(mapIngredientResultSet(rs.rows[0]));
 

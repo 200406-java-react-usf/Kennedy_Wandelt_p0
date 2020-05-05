@@ -60,24 +60,24 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
         }
     }
 
-    // async addRecipe(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
+    async addRecipe(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
 
-    //     let client : PoolClient;
+        let client : PoolClient;
 
-    //     try{
-    //         client = await connectionPool.connect();
-    //         let mpId = await client.query(`select id from meal_plans where mealplan_name = $1`, [mpName]);
-    //         let newRecipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
-    //         let sql = `insert into plan_recipes (meal_plan_id, recipe_id, times) values ($1, $2, $3)`;
-    //         let rs = await client.query(sql, [mpId.rows[0].id, newRecipeId.rows[0].id, times]);
-    //         let returnPlan = await this.getByName(mpName);
-    //         return returnPlan;
-    //     } catch (e) {
-    //         throw new InternalServerError();
-    //     } finally {
-    //         client && client.release();
-    //     }
-    // }
+        try{
+            client = await connectionPool.connect();
+            let mpId = await client.query(`select id from meal_plans where mealplan_name = $1`, [mpName]);
+            let newRecipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
+            let sql = `insert into plan_recipes (meal_plan_id, recipe_id, times) values ($1, $2, $3)`;
+            let rs = await client.query(sql, [mpId.rows[0].id, newRecipeId.rows[0].id, times]);
+            let returnPlan = await this.getByName(mpName);
+            return returnPlan;
+        } catch (e) {
+            throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
+    }
 
     async deleteByName(name: string): Promise<boolean> {
 
