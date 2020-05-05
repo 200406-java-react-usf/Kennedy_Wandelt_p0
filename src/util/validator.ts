@@ -11,8 +11,12 @@ export const isValidObject = (obj: Object, ...nullableProps: string[]) => {
         return obj[key];
     });
 };
+export const isValidString = (...strs: string[]): boolean => {
+    return (strs.filter(str => !str || typeof str !== 'string').length == 0);
+};
 
 export default {
     isEmptyObject,
-    isValidObject
+    isValidObject,
+    isValidString
 }
