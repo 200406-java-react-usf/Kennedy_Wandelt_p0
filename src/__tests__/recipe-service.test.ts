@@ -106,13 +106,14 @@ describe('recipeService', () => {
         }
     });
 
-    test('should return new object when a valid object is added to addNewIngredient', async() => {
+    test('should return new object when a valid object is added to addNewRecipe', async() => {
 
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(true);
         
-        mockRepo.getIngredientByName = jest.fn().mockReturnValue(false);
+        mockRepo.getRecipeByName = jest.fn().mockReturnValue(false);
         mockRepo.getByName = jest.fn().mockReturnValue(false);
+        
 
         mockRepo.save = jest.fn().mockImplementation((recipe: Recipe) => {
             return new Promise<Recipe>((resolve) => resolve(mockRecipes[2]));
@@ -126,14 +127,16 @@ describe('recipeService', () => {
 
     });
     
-    test('should return Bad Request error if given an object with null values', async() => {
+    test('should return Bad Request error if add newrecipe given an object with null values', async() => {
 
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(false);
 
         try {
-            await sut.addNewRecipe({id: null, name: 'soup', servings: 1, totalCals: 300, totalCarbs: 30, totalProtien: 30, totalFats: 30})
+            let result = await sut.addNewRecipe({id: null, name: null, servings: 1, totalCals: 300, totalCarbs: 30, totalProtien: 30, totalFats: 30})
+            console.log(result);
         } catch (e) {
+            console.log(e)
             expect(e instanceof BadRequestError).toBe(true);
         }
     });

@@ -29,9 +29,13 @@ export class RecipeService {
     }
     async getRecipeByName(name: string): Promise<Recipe>{
 
+        if(!isValidString(name)){
+            throw new BadRequestError();
+        }
+
         let recipe =  await this.recipeRepo.getByName(name);
 
-        if(!recipe || isEmptyObject(recipe)){
+        if(isEmptyObject(recipe)){
             throw new DataNotFoundError();
         }
 
@@ -47,10 +51,9 @@ export class RecipeService {
 
     async addNewRecipe(recipe: Recipe): Promise<Recipe> {
         
-        
-
+    
         if(!isValidObject(recipe,'id', 'servings', 'totalCals', 'totalCarbs', 'totalProtien', 'totalFats')) {
-            throw new BadRequestError('Invalid property values found in provided recipe.');
+            throw new BadRequestError();
         }
 
         let conflict = await this.getRecipeByName(recipe.name);
