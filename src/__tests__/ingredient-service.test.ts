@@ -161,10 +161,23 @@ describe('ingredientService', () => {
     test('should return true when deleteIngredientbyName is given valid Ingredient name', async() => {
         expect.hasAssertions();
         Validator.isValidString=jest.fn().mockReturnValue(true);
+        mockRepo.deleteByName = jest.fn().mockReturnValue(true);
 
         let result = await sut.deleteIngredientByName('orange');
 
         expect(result).toBe(true);   
+    });
+    //BadRequest Error delete
+    test('should return new ingredient when updateIngredient is given valid Ingredient', async() => {
+        expect.hasAssertions();
+        Validator.isValidObject = jest.fn().mockReturnValue(true);
+        mockRepo.updateIngredient = jest.fn().mockReturnValue(mockIngredients[4]);
+
+        let result = await sut.updateIngredient(mockIngredients[4]);
+
+        expect(result).toBe(mockIngredients[4]);
+        expect(result).toBeTruthy;
+        expect(result instanceof Ingredient).toBe(true);
     });
 
 });

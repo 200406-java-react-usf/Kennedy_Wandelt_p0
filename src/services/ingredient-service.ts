@@ -69,7 +69,7 @@ export class IngredientService {
 
     async deleteIngredientByName(name: string): Promise<boolean> {
 
-        if(!isValidString) {
+        if(!isValidString(name)) {
             throw new BadRequestError('Invalid name.');
         }
 
@@ -77,11 +77,13 @@ export class IngredientService {
         return isDeleted;
     }
 
-    async updateIngredient(ingredientToUpdate: Ingredient): Promise<Ingredient> {
+    async updateIngredient(ingToUpdate: Ingredient): Promise<Ingredient> {
 
-        //validation
+        if(!isValidObject(ingToUpdate)) {
+            throw new BadRequestError('Invalid Ingredient Object');
+        }
 
-        const updatedIng = await this.ingredientRepo.updateIngredient(ingredientToUpdate);
+        const updatedIng = await this.ingredientRepo.updateIngredient(ingToUpdate);
         return updatedIng;
     }
 }
