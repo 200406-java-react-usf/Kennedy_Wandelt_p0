@@ -2,7 +2,7 @@ import { IngredientService } from '../services/ingredient-service';
 import { IngredientRepo } from '../repos/ingredient-repo';
 import { Ingredient } from '../models/ingredient';
 import Validator from '../util/validator';
-import { DataNotFoundError, BadRequestError} from '../errors/errors';
+import { DataNotFoundError, BadRequestError, DataSaveError} from '../errors/errors';
 
 jest.mock('../repos/ingredient-repo', () => {
     return new class IngredientRepo {
@@ -141,6 +141,20 @@ describe('ingredientService', () => {
             await sut.addNewIngredient({id: null, name: 'milk', unit: "cup", calories: null, carbs: 30, protien: 30, fats: 30})
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
+        }
+    });
+
+    test('should return DataSaveError if given a conflict', async() => {
+
+        expect.hasAssertions();
+        Validator.isValidObject=jest.fn().mockReturnValue(true);
+        mockRepo.getByName = jest.fn().mockReturnValue(mockIngredients[4]);
+        mockRepo.getIngredientByName = jest.fn().mockReturnValue(mockIngredients[4]);
+        
+        try{
+            await sut.addNewIngredient({id: null, name: 'orange', unit: "unit", calories: 500, carbs: 50, protien: 50, fats: 50})
+        } catch (e) {
+            expect(e instanceof DataSaveError).toBe(true);
         }
     });
 
