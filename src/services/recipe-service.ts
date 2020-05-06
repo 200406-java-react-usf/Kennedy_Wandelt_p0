@@ -59,7 +59,7 @@ export class RecipeService {
 
         let conflict = await this.recipeRepo.getByName(recipe.name);
 
-        if (conflict) {
+        if (!isEmptyObject(conflict)) {
             throw new DataSaveError('A recipe by this name already exists.');
         }
 
