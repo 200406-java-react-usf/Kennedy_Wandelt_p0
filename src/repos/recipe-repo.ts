@@ -8,6 +8,10 @@ import { mapRecipeResultSet } from '../util/result-set-mapper';
 
 export class RecipeRepo implements CrudRepository<Recipe> {
     
+    /**
+     * retrieves all recipe objects from th recipes table of the data base
+     * 
+     */
     async getAll(): Promise<Recipe[]> {
 
         let client : PoolClient;
@@ -25,6 +29,10 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
+    /**
+     * retrieves a single rcipe object based on the name value parameter
+     * @param name - a string containing a name value of a recipe
+     */
     async getByName(name: string): Promise<Recipe> {
 
         let client : PoolClient;
@@ -41,6 +49,10 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
+    /**
+     *  adds a single recipe onject to the recipes database
+     * @param newRecipe - a recipe object which will be added to the database
+     */
     async save(newRecipe: Recipe): Promise<Recipe> {
 
         let client : PoolClient;
@@ -60,27 +72,6 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
-    async addIngredient(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
-
-        let client : PoolClient;
-
-        try{
-            client = await connectionPool.connect();
-            let recipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
-
-            let newIngId = await client.query(`select id from ingredients where ingredient_name = $1`, [ingName]);
-
-            let sql = `insert into recipe_measurements (ingredient_id, recipe_id, ratio) values ($1, $2, $3)`;
-            let rs = await client.query(sql, [newIngId.rows[0].id, recipeId.rows[0].id, ratio]);
-
-            let returnRecipe = await this.getByName(recipeName);
-            return returnRecipe;
-        } catch (e) {
-            throw new InternalServerError();
-        } finally {
-            client && client.release();
-        }
-    }
 
     async deleteByName(name: string): Promise<boolean> {
 
@@ -109,6 +100,28 @@ export class RecipeRepo implements CrudRepository<Recipe> {
             return mapRecipeResultSet(rs.rows[0]);
         } catch (e) {
             throw new InternalServerError();
+        } finally {
+            client && client.release();
+        }
+    }
+
+    async addIngredient(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
+
+        let client : PoolClient;
+
+        try{
+            client = await connectionPool.connect();
+            let recipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
+
+            let newIngId = await client.query(`select id from ingredients where ingredient_name = $1`, [ingName]);
+
+            let sql = `insert into recipe_measurements (ingredient_id, recipe_id, ratio) values ($1, $2, $3)`;
+            let rs = await client.query(sql, [newIngId.rows[0].id, recipeId.rows[0].id, ratio]);
+
+            let returnRecipe = await this.getByName(recipeName);
+            return returnRecipe;
+        } catch (e) {
+            throw new InternalServerError('addIngredient Recipe');
         } finally {
             client && client.release();
         }
