@@ -22,6 +22,7 @@ describe('recipeRepo', () => {
 
     let sut = new RecipeRepo();
     let mockConnect = mockIndex.connectionPool.connect;
+    let mockRepo;
 
     
     beforeEach(() => {
@@ -43,6 +44,16 @@ describe('recipeRepo', () => {
                     }
                 }),
                 release: jest.fn()
+            }
+        });
+        mockRepo = jest.fn(() => {
+
+            return{
+                getAll: jest.fn(),
+                getByName: jest.fn(),
+                save: jest.fn(),
+                deleteByName: jest.fn(),
+                update: jest.fn()
             }
         });
         (mockMapper.mapRecipeResultSet as jest.Mock).mockClear();
@@ -211,11 +222,23 @@ describe('recipeRepo', () => {
             expect(e instanceof InternalServerError).toBe(true);
         }
     });
-    // test('Should return recipe when a new ingredient is added to the recipe ', async() => {
-    //     expect.hasAssertions();
+    test('Should return recipe when a new ingredient is added to the recipe ', async() => {
+        expect.hasAssertions();
+        let mockRecipe = new Recipe(null,'recipe', 1);
+        (mockConnect as jest.Mock).mockImplementation(() => {
+            return {
+                query: jest.fn().mockReturnValueOnce(1).mockReturnValueOnce(1).mockReturnValueOnce(true),
+                release: jest.fn()
+            }
+        });
 
+        mockRepo.getByName = jest.fn().mockReturnValue(mockRecipe);
         
 
-    //     await sut.addIngredient('recipe', 'ingredient', 1)
-    // })
+        let result = await sut.addIngredient('recipe', 'ingredient', 1);
+
+        expect(result).toBeTruthy;
+        expect(result instanceof Recipe).toBe(true);
+        expect(mockConnect).toBeCalledTimes(1);
+    });
 });

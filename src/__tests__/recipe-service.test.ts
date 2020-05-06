@@ -113,9 +113,9 @@ describe('recipeService', () => {
 
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(true);
-        
-        mockRepo.getRecipeByName = jest.fn().mockReturnValue(false);
-        mockRepo.getByName = jest.fn().mockReturnValue(false);
+        Validator.isEmptyObject=jest.fn().mockReturnValue(true);
+
+        mockRepo.getByName = jest.fn().mockReturnValue({});
         
 
         mockRepo.save = jest.fn().mockImplementation((recipe: Recipe) => {
@@ -191,7 +191,7 @@ describe('recipeService', () => {
         expect(result instanceof Recipe).toBe(true);
     });
 
-    test('should return BadRequestError when updateIngredient is given invalid object', async() => {
+    test('should return BadRequestError when updateRecipe is given invalid object', async() => {
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(false);
 

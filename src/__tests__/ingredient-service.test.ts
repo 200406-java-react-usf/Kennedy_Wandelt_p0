@@ -116,9 +116,9 @@ describe('ingredientService', () => {
 
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(true);
-        
-        mockRepo.getIngredientByName = jest.fn().mockReturnValue(false);
-        mockRepo.getByName = jest.fn().mockReturnValue(false);
+        Validator.isEmptyObject=jest.fn().mockReturnValue(true);
+
+        mockRepo.getByName = jest.fn().mockReturnValue({});
 
         mockRepo.save = jest.fn().mockImplementation((ing: Ingredient) => {
             return new Promise<Ingredient>((resolve) => resolve(mockIngredients[2]));

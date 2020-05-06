@@ -107,13 +107,13 @@ describe('mealplanService', () => {
         }
     });
 
-    test('should return new object when a valid object is added to addNewRecipe', async() => {
+    test('should return new object when a valid object is added to addNewPlan', async() => {
 
         expect.hasAssertions();
         Validator.isValidObject=jest.fn().mockReturnValue(true);
-        
-        mockRepo.getPlanByName = jest.fn().mockReturnValue(false);
-        mockRepo.getByName = jest.fn().mockReturnValue(false);
+        Validator.isEmptyObject=jest.fn().mockReturnValue(true);
+
+        mockRepo.getByName = jest.fn().mockReturnValue({});
         
 
         mockRepo.save = jest.fn().mockImplementation((recipe: MealPlan) => {

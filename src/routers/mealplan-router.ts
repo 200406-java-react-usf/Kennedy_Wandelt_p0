@@ -51,7 +51,7 @@ MealPlanRouter.post('/:name', async (req, resp) => {
     console.log(req.body);
 
     try {
-        let addedRecipe = await mpService.addRecipeToPlan(name, req.body.recipe, +req.body.times);
+        let addedRecipe = await mpService.addRecipeToPlan(name, req.body.recipe_name, +req.body.times);
         resp.status(201).json(addedRecipe);
     } catch(e) {
         resp.status(e.statusCode).json(e);
