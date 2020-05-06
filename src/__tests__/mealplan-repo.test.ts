@@ -233,8 +233,7 @@ describe('mealplanRepo', () => {
 
         let result = await sut.addRecipe('recipe', 'ingredient', 1);
 
-        expect(result).toBeTruthy;
-        expect(result instanceof MealPlan).toBe(true);
+        expect(result).toBe(true);
         expect(mockConnect).toBeCalledTimes(1);
     });
 });

@@ -91,20 +91,26 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
             client && client.release();
         }
     }
-    async addRecipe(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
+    async addRecipe(mealplanName: string, recipeName: string, times: number): Promise<boolean> {
 
         let client : PoolClient;
 
         try{
             client = await connectionPool.connect();
-            let mpId = await client.query(`select id from meal_plans where mealplan_name = $1`, [mpName]);
-            let newRecipeId = await client.query(`select id from recipes where recipe_name = $1`, [recipeName]);
-            let sql = `insert into plan_recipes (meal_plan_id, recipe_id, times) values ($1, $2, $3)`;
-            let rs = await client.query(sql, [mpId.rows[0].id, newRecipeId.rows[0].id, times]);
-            let returnPlan = await this.getByName(mpName);
-            return returnPlan;
+            let recipeId = await client.query('select id from recipes where recipe_name = $1;', [recipeName]);
+            console.log(recipeId)
+            let planId = await client.query('select id from mealplans where mealplan_name = $1;', [mealplanName]);
+            console.log(planId)
+            let sql = `insert into recipe_measurements (ingredient_id, recipe_id, ratio) values ($1, $2, $3);`;
+            console.log(sql)
+            let rs = await client.query(sql, [planId, recipeId, times]);
+            console.log(rs)
+            //let returnRecipe = await this.getByName(recipeName);
+
+            return true;
         } catch (e) {
-            throw new InternalServerError('addRecipe MP');
+            console.log(e)
+            throw new InternalServerError('add plan Recipe');
         } finally {
             client && client.release();
         }

@@ -42,7 +42,7 @@ export class RecipeService {
         return(recipe);
     }
 
-    async addIngredientToRecipe(recipeName: string, ingName: string, ratio: number): Promise<Recipe> {
+    async addIngredientToRecipe(recipeName: string, ingName: string, ratio: number): Promise<boolean> {
 
         let newRecipe = await this.recipeRepo.addIngredient(recipeName, ingName, ratio);
         
