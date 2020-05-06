@@ -54,7 +54,7 @@ export class IngredientService {
 
             let conflict = await this.ingredientRepo.getByName(newIng.name);
 
-            if (conflict) {
+            if (!isEmptyObject(conflict)) {
                 throw new DataSaveError('An ingredient by this name already exists.');
             }
 

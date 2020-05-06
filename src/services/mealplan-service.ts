@@ -56,7 +56,7 @@ export class MealPlanService {
 
         let conflict = await this.mealplanRepo.getByName(mp.name);
 
-        if (conflict) {
+        if (!isEmptyObject(conflict)) {
             throw new DataSaveError('A meal plan by this name already exists.');
         }
         
