@@ -40,7 +40,7 @@ export class MealPlanService {
         return(mp);
     }
 
-    async addRecipeToPlan(mpName: string, recipeName: string, times: number): Promise<MealPlan> {
+    async addRecipeToPlan(mpName: string, recipeName: string, times: number): Promise<Boolean> {
 
         let newPlan = await this.mealplanRepo.addRecipe(mpName, recipeName, times);
         
