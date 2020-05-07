@@ -72,7 +72,10 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
-
+    /**
+     * delted a recipe from recipes table of database given the recipe name as an argument
+     * @param name - a string containing a name of a recipe object to be deleted
+     */
     async deleteByName(name: string): Promise<boolean> {
 
         let client : PoolClient;
@@ -89,6 +92,10 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
+    /**
+     * updates a recipe give the entire recipe object, id is not updatable
+     * @param recipeToUpdate - a full recipe object including id and all values
+     */
     async update(recipeToUpdate: Recipe): Promise<Recipe> {
 
         let client : PoolClient;
@@ -105,6 +112,12 @@ export class RecipeRepo implements CrudRepository<Recipe> {
         }
     }
 
+    /**
+     * adds an ingredient and recipe pair to recipe-ingredient junction table
+     * @param recipeName - name of recipe whihc ingredient is added to
+     * @param ingName - name of ingredient to add
+     * @param ratio - fraction of units of ingredient to add
+     */
     async addIngredient(recipeName: string, ingName: string, ratio: number): Promise<boolean> {
 
         let client : PoolClient;

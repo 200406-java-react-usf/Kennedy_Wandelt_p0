@@ -13,6 +13,9 @@ import { mapIngredientResultSet } from '../util/result-set-mapper';
 
 export class IngredientRepo implements CrudRepo<Ingredient> {
 
+    /**
+     * retrieves all Ingerdient objects from ingredients table
+     */
     async getAll(): Promise<Ingredient[]> {
 
         let client : PoolClient;
@@ -29,6 +32,10 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         }
     }
 
+    /**
+     * retireves a single Ingredient object from ingredietns table that matches given name value
+     * @param name - string value representing name of valid Ingredient
+     */
     async getByName(name: string): Promise<Ingredient> {
 
         let client : PoolClient;
@@ -44,6 +51,11 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         }  
     }
 
+
+    /**
+     * adds an ingredient object to the ingredients table
+     * @param newIng - Ingredient object with null id, name, unit, calories, carbs, protien, and fats
+     */
     async save(newIng: Ingredient): Promise<Ingredient> {
 
         let client : PoolClient;
@@ -67,6 +79,10 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         }
     }
 
+    /**
+     * removes an Ingredient object from the ingredients table given a alid name value
+     * @param name - string containing a valid Ingrdient name value
+     */
     async deleteByName(name: string): Promise<boolean> {
 
         let client : PoolClient;
@@ -86,6 +102,10 @@ export class IngredientRepo implements CrudRepo<Ingredient> {
         }
     }
 
+    /**
+     * updates an existing Ingredient value with a full Ingredient object must contain id, id cannot be changed
+     * @param ing - an Ingredient object 
+     */
     async updateIngredient(ing: Ingredient): Promise<Ingredient> {
 
         let client : PoolClient;

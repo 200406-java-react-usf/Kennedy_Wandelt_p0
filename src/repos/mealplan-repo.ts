@@ -8,6 +8,9 @@ import { mapMealPlanResultSet } from '../util/result-set-mapper';
 
 export class MealPlanRepo implements CrudRepository<MealPlan> {
     
+    /**
+     * retrieves all MealPlan objects from the mealplans table of the database
+     */
     async getAll(): Promise<MealPlan[]> {
 
         let client : PoolClient;
@@ -25,6 +28,10 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
         }
     }
 
+    /**
+     * retrieves a MealPlan object with a name value equal to passed a parameter
+     * @param name - a string which contains a name value of MealPlan object to e retireived 
+     */
     async getByName(name: string): Promise<MealPlan> {
 
         let client : PoolClient;
@@ -41,6 +48,10 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
         }
     }
 
+    /**
+     * adds a new MealPlan object to the mealplans table of the database
+     * @param newPlan - a MealPlan object (sans id) which requires a name and length
+     */
     async save(newPlan: MealPlan): Promise<MealPlan> {
 
         let client : PoolClient;
@@ -60,6 +71,10 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
         }
     }
 
+    /**
+     * deletes an item from the the mealplans table given a name value
+     * @param name - string value containning a valid name or a MealPlan to be deleted
+     */
     async deleteByName(name: string): Promise<boolean> {
 
         let client : PoolClient;
@@ -75,7 +90,10 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
             client && client.release();
         }
     }
-
+    /**
+     * updates a MealPlan object when given a full object (must include id)
+     * @param mpToUpdate - MelaPlan object requiring id and all field will be updated wih new information
+     */
     async update(mpToUpdate: MealPlan): Promise<MealPlan> {
 
         let client : PoolClient;
@@ -91,6 +109,13 @@ export class MealPlanRepo implements CrudRepository<MealPlan> {
             client && client.release();
         }
     }
+
+    /**
+     * adds a recipe_mealplan relationship to the junction table to effectively add a recipe to a mealplan
+     * @param mealplanName - string containing name value of valid MealPlan object to be added to
+     * @param recipeName - string containing name vlaue of valid recipe to be added
+     * @param times - number of occurrences of the recipes in said meal plan
+     */
     async addRecipe(mealplanName: string, recipeName: string, times: number): Promise<boolean> {
 
         let client : PoolClient;
