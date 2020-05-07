@@ -17,6 +17,9 @@ export class MealPlanService {
         this.mealplanRepo = mealplanRepo;
     }
 
+    /**
+     * validates that retrieved MealPlan array contains at leat one recipe
+     */
     async getAllPlans(): Promise<MealPlan[]>{
 
         let plans = await this.mealplanRepo.getAll();
@@ -27,6 +30,11 @@ export class MealPlanService {
 
         return(plans);
     }
+
+    /**
+     * validates that given name of object to be retrieved is valid and that an object was retrieved
+     * @param name - string contianing name of MealPlan to be retrieved
+     */
     async getPlanByName(name: string): Promise<MealPlan>{
         if(!isValidString(name)) {
             throw new BadRequestError('Input is not a valid string, unable to process request');
@@ -40,14 +48,26 @@ export class MealPlanService {
         return(mp);
     }
 
+    /**
+     * validates that mpName and recipeName are valid strings
+     * @param mpName - name of meal plan to be added to
+     * @param recipeName - name of recipe to be added
+     * @param times - number of times the recipe is duplicated in the meal plan
+     */
     async addRecipeToPlan(mpName: string, recipeName: string, times: number): Promise<Boolean> {
 
+        if(!isValidString(mpName) || !isValidString(recipeName)) {
+            throw new BadRequestError('Input is not a valid string, unable to process request');
+        }
         let newPlan = await this.mealplanRepo.addRecipe(mpName, recipeName, times);
         
-        //NEEDS VALIDATION
         return(newPlan);
     }
 
+    /**
+     * validates that MealPlan object to be added is valid and that there is no current MealPlan by that name
+     * @param mp - MealPlan object to be added
+     */
     async addNewPlan(mp: MealPlan): Promise<MealPlan> {
 
         if(!isValidObject(mp,'id')) {
@@ -65,6 +85,11 @@ export class MealPlanService {
         return(newPlan);
     }
 
+
+    /**
+     * Validates that MealPlan name to be deleted is a valid string 
+     * @param planName - name of plan to be deleted
+     */
     async deletePlanByName(planName: string): Promise<boolean> {
 
         if(!isValidString(planName)) {
@@ -76,6 +101,10 @@ export class MealPlanService {
         return(isDeleted);
     }
 
+    /**
+     * validates that MealPlan object to be updated is a valid object containing an id
+     * @param planToUpdate - valid MealPlan object containing id to be updated
+     */
     async updatePlan(planToUpdate: MealPlan): Promise<MealPlan> {
         if(!isValidObject(planToUpdate)) {
             throw new BadRequestError('Invalid MealPlan Object');

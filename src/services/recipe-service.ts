@@ -17,6 +17,9 @@ export class RecipeService {
         this.recipeRepo = recipeRepo;
     }
 
+    /**
+     * validates that recipe array from the recipe repo function is not empty
+     */
     async getAllRecipes(): Promise<Recipe[]>{
 
         let recipes = await this.recipeRepo.getAll();
@@ -27,6 +30,11 @@ export class RecipeService {
 
         return(recipes);
     }
+
+    /**
+     * validates that input name is a valid string and that recipe recieved from repo is not empty
+     * @param name - name of recipe to retrieve
+     */
     async getRecipeByName(name: string): Promise<Recipe>{
 
         if(!isValidString(name)){
@@ -42,14 +50,27 @@ export class RecipeService {
         return(recipe);
     }
 
+    /**
+     * validates that ingredient name, recipe name are valid strings
+     * @param recipeName - name of recipe to be added to
+     * @param ingName - name of ingredient to be added
+     * @param ratio - amount of ingredient unit to be added
+     */
     async addIngredientToRecipe(recipeName: string, ingName: string, ratio: number): Promise<boolean> {
-
-        let newRecipe = await this.recipeRepo.addIngredient(recipeName, ingName, ratio);
         
-        //NEEDS VALIDATION
+        if(!isValidString(recipeName) || !isValidString(ingName)){
+            throw new BadRequestError('Invalid string given, unable to finish request');
+        }
+        
+        let newRecipe = await this.recipeRepo.addIngredient(recipeName, ingName, ratio);
+    
         return(newRecipe);
     }
 
+    /**
+     * validates an input recipe to be added, validates that this recipe does not already exist
+     * @param recipe - recipe object to be added
+     */
     async addNewRecipe(recipe: Recipe): Promise<Recipe> {
         
     
@@ -68,6 +89,10 @@ export class RecipeService {
         return(newRecipe);
     }
 
+    /**
+     * validates input name for objetc to be deleted
+     * @param name - name of obejct to be deleted
+     */
     async deleteRecipeByName(name: string): Promise<boolean> {
 
 
@@ -80,6 +105,10 @@ export class RecipeService {
         return(isDeleted);
     }
 
+    /**
+     * validates the recipe object givne that will be sent to update (id inclusive)
+     * @param recipeToUpdate - Recipe object which will override current recipe of that id
+     */
     async updateRecipe(recipeToUpdate: Recipe): Promise<Recipe> {
 
         if(!isValidObject(recipeToUpdate)) {
